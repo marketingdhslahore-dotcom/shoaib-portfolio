@@ -4,14 +4,17 @@ var clamp=function(x){return Math.min(1,Math.max(0,x))},seg=function(p,a,b){retu
 var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches,fine=matchMedia('(hover:hover) and (pointer:fine)').matches,mob=function(){return innerWidth<=860};
 var SX=[0.524, 0.524, 0.524, 0.524, 0.524, 0.524, 0.523, 0.522, 0.522, 0.522, 0.521, 0.521, 0.521, 0.52, 0.519, 0.519, 0.518, 0.517, 0.516, 0.515, 0.513, 0.51, 0.506, 0.502, 0.497, 0.492, 0.488, 0.484, 0.482, 0.48, 0.48, 0.48, 0.481, 0.482, 0.484, 0.485, 0.488, 0.49, 0.493, 0.496, 0.5, 0.504, 0.507, 0.509, 0.511, 0.51, 0.507, 0.503, 0.497, 0.488, 0.477, 0.464, 0.449, 0.434, 0.419, 0.405, 0.392, 0.382, 0.373, 0.366, 0.361, 0.356, 0.352, 0.348, 0.343, 0.337, 0.331, 0.325, 0.32, 0.318, 0.316, 0.316, 0.316, 0.316, 0.315, 0.314, 0.31, 0.305, 0.298, 0.29, 0.282, 0.274, 0.268, 0.262, 0.258, 0.254, 0.251, 0.25, 0.25, 0.251, 0.252, 0.255, 0.258, 0.261, 0.263, 0.266];
 // ---- cinematic hero video
-var vid=$('#hv'),facts=$('#facts'),term=$('#term'),cue=$('#cue'),prog=$('#prog'),cp=$('.hero .copy'),snd=$('#snd');
+var vid=$('#hv'),facts=$('#facts'),term=$('#term'),cue=$('#cue'),prog=$('#prog'),cp=$('.hero .copy');
 var scrollTick=0;
-function onScroll(){if(scrollTick)return;scrollTick=requestAnimationFrame(function(){scrollTick=0;var y=window.scrollY||0,hh=window.innerHeight||1;prog.style.transform='scaleX('+clamp(y/Math.max(1,document.documentElement.scrollHeight-hh))+')';cue.style.opacity=1-clamp(y/160);if(y<hh*1.2&&!reduce){cp.style.opacity=1-clamp(y/(hh*.9))}})}
+function onScroll(){if(scrollTick)return;scrollTick=requestAnimationFrame(function(){scrollTick=0;var y=window.scrollY||0,hh=window.innerHeight||1,hero=document.querySelector('.hero'),heroH=hero?hero.offsetHeight:hh,p=clamp(y/Math.max(1,heroH));prog.style.transform='scaleX('+clamp(y/Math.max(1,document.documentElement.scrollHeight-hh))+')';cue.style.opacity=1-clamp(y/160);if(y<hh*1.2&&!reduce){cp.style.opacity=1-clamp(y/(hh*.9))}if(vid&&!reduce){/* Scroll-linked cinematic video parallax, tuned for touch and desktop */vid.style.setProperty('--video-scroll-y',(-Math.min(y,heroH)*.10).toFixed(1)+'px');vid.style.setProperty('--video-scroll-scale',(1.025+p*.105).toFixed(3));hero&&hero.style.setProperty('--hero-scroll-progress',p.toFixed(3));}})}
 addEventListener('scroll',onScroll,{passive:true});onScroll();
 vid.addEventListener('ended',function(){vid.style.opacity=0;setTimeout(function(){vid.currentTime=0;vid.play();vid.style.opacity=1},500)});
-if(reduce){vid.removeAttribute('autoplay');vid.pause()}else{var pp=vid.play();if(pp&&pp.catch)pp.catch(function(){})}
-document.addEventListener('visibilitychange',function(){if(document.hidden)vid.pause();else if(!reduce)vid.play().catch(function(){})});
-snd.onclick=function(){vid.muted=!vid.muted;snd.setAttribute('aria-pressed',!vid.muted);snd.textContent=vid.muted?'🔇 Sound off':'🔊 Sound on'};
+if(reduce){vid.removeAttribute('autoplay');vid.pause()}else{vid.muted=true;vid.playsInline=true;var pp=vid.play();if(pp&&pp.catch)pp.catch(function(){vid.classList.add('video-fallback')})}
+vid.addEventListener('error',function(){vid.classList.add('video-fallback')});
+vid.addEventListener('loadeddata',function(){vid.classList.remove('video-fallback')});
+vid.addEventListener('canplay',function(){vid.classList.remove('video-fallback');if(!reduce&&document.visibilityState==='visible'){var ready=vid.play();if(ready&&ready.catch)ready.catch(function(){/* keep poster visible as a graceful fallback */vid.classList.add('video-fallback')})}});
+document.addEventListener('visibilitychange',function(){if(document.hidden)vid.pause();else if(!reduce){var resume=vid.play();if(resume&&resume.catch)resume.catch(function(){vid.classList.add('video-fallback')})}});
+
 // ---- hero terminal
 var tl=['<b>user</b> “Do you have a 3-marla plot?”','<b>intent</b> property_enquiry → qualify_lead','<b>rag</b> 4 listings retrieved','<b>agent</b> asks budget, books site visit','<b>qa-gate</b> tone ok · facts ok → <b>sent</b>'],ti=0,tt;
 function typeT(){term.innerHTML=tl.slice(0,ti+1).join('<br>');ti=(ti+1)%(tl.length+2);tt=setTimeout(typeT,ti===0?2600:1100);if(ti===0)term.innerHTML=tl.join('<br>')}if(!reduce)typeT();else term.innerHTML=tl.join('<br>');
