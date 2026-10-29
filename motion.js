@@ -20,8 +20,10 @@ function init(){
 
   /* ---- reveal assignment ---- */
   var seen=new Set();
+  var mobile=small();
   function assign(sel,variants,opt){
     opt=opt||{};
+    if(mobile&&opt.mc)return;            /* phones: cards use the shuffled looping transitions below */
     $$(sel).forEach(function(el,i){
       if(seen.has(el)||(hero&&hero.contains(el)))return;
       seen.add(el);
@@ -35,16 +37,48 @@ function init(){
   }
   assign('.sec>h2,.sec-in>h2,.about-content h2,.brain-copy h2,.dash-head h2,.ct h2,.proof-title,.me h2',['head']);
   assign('.sec>.lead,.sec-in>.lead,.about-intro,.dash-head p,.brain-copy .lead',['up']);
-  assign('.dash-card',['left','up','right','zoom'],{tilt:1});
-  assign('.why-card',['left','right','left','right'],{tilt:1});
-  assign('.bento>article',['zoom','flip','flip','zoom','up'],{tilt:1});
-  assign('.proj',['left','right'],{stagger:false});
-  assign('.stats li',['zoom','zoom','zoom','zoom'],{tilt:1});
-  assign('.chart',['left','right'],{stagger:false,tilt:1});
-  assign('.tl li',['left','right','left','right']);
+  assign('.dash-card',['left','up','right','zoom'],{tilt:1,mc:1});
+  assign('.why-card',['left','right','left','right'],{tilt:1,mc:1});
+  assign('.bento>article',['zoom','flip','flip','zoom','up'],{tilt:1,mc:1});
+  assign('.proj',['left','right'],{stagger:false,mc:1});
+  assign('.stats li',['zoom','zoom','zoom','zoom'],{tilt:1,mc:1});
+  assign('.chart',['left','right'],{stagger:false,tilt:1,mc:1});
+  assign('.tl li',['left','right','left','right'],{mc:1});
   assign('.mp,.cp,.about-photo',['clip'],{img:1,stagger:false});
-  assign('.cc,.brain-layout',['zoom'],{stagger:false});
-  assign('.stk,.about-glass',['up'],{stagger:false});
+  assign('.cc,.brain-layout',['zoom'],{stagger:false,mc:1});
+  assign('.stk,.about-glass',['up'],{stagger:false,mc:1});
+
+
+  /* ---- phones: every card flips / flies in, differently each time, and replays on every scroll (loop + mix + shuffle & pick) ---- */
+  if(mobile){
+    var MCV=['flipy','flipx','up','left','right','zoom','drop','spin'];
+    var bag=[],last='';
+    function pick(){
+      if(!bag.length){
+        bag=MCV.slice();
+        for(var i=bag.length-1;i>0;i--){var k=Math.floor(Math.random()*(i+1));var t=bag[i];bag[i]=bag[k];bag[k]=t}
+        if(bag[bag.length-1]===last&&bag.length>1){var x=bag.shift();bag.push(x)}   /* never the same twice in a row */
+      }
+      last=bag.pop();return last;
+    }
+    var cards=$$('.dash-card,.why-card,.bento>article,.proj,.stats li,.chart,.tl li,.cc,.brain-layout,.about-glass,.stk');
+    var cio=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        var el=e.target;
+        if(e.isIntersecting&&e.intersectionRatio>=0.12){
+          el.classList.remove('mc-hide');                       /* animates in */
+        }else if(!e.isIntersecting){
+          el.setAttribute('data-mc',pick());                    /* off screen: re-arm with a fresh random effect */
+          el.classList.add('mc-hide');
+        }
+      });
+    },{threshold:[0,0.12]});
+    cards.forEach(function(el){
+      el.classList.remove('rv');el.classList.add('in','mc');
+      el.setAttribute('data-mc',pick());
+      cio.observe(el);
+    });
+  }
 
   var pending=$$('.mx[data-mx]');
   function finish(el){

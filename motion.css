@@ -159,3 +159,38 @@ html.js .tl::before{transform-origin:top;transform:scaleY(var(--tlp,1))}
 #agency .rail figure:hover figcaption span,.proof figure:hover figcaption span{max-height:80px;opacity:1;margin-top:4px}
 #agency .rail figcaption,.proof figcaption{padding:10px 14px}
 @media(hover:none){#agency .rail figcaption span,.proof figcaption span{max-height:0;opacity:0}#agency .rail figure:active figcaption span{max-height:80px;opacity:1;margin-top:4px}}
+
+
+/* ===== update: marquee bands removed ===== */
+.mx-marquee{display:none!important}
+
+/* ===== update: stack pane (LLMs etc.) – description text clearly visible + breathing room ===== */
+#lpane{padding:clamp(22px,5vw,36px)!important;box-sizing:border-box}
+#lpane h3{color:#172554!important;opacity:1!important}
+#lpane p{color:#2f3b57!important;opacity:1!important;line-height:1.65;-webkit-text-fill-color:currentColor}
+#lpane *{min-width:0;overflow-wrap:break-word}
+
+/* ===== update: text never touches card / grid edges ===== */
+.proj .pt,.dash-card,.why-card,.bento>article,.stats li,.chart{box-sizing:border-box;min-width:0;overflow-wrap:break-word}
+.proj .pt{padding-inline:clamp(20px,5vw,32px)}
+.chips{flex-wrap:wrap}
+@media(max-width:860px){
+  .proj .pt{padding-block:clamp(20px,5vw,28px)}
+  .layers{gap:10px}
+  #agency .rail figcaption,.proof figcaption{left:16px;right:16px;overflow-wrap:break-word}
+}
+
+/* ===== update: phone cards – flip / fly in, random each time, replay on every scroll ===== */
+@media(max-width:860px){
+  html.js .mc{transition:opacity .75s var(--mx-ease),transform 1s var(--mx-ease)!important;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+  html.js .mc.mc-hide{opacity:0!important;transition:none!important;will-change:transform,opacity}
+  html.js .mc.mc-hide[data-mc=flipy]{transform:perspective(900px) rotateY(-78deg) scale(.92)!important;transform-origin:0 50%}
+  html.js .mc.mc-hide[data-mc=flipx]{transform:perspective(900px) rotateX(70deg) translate3d(0,50px,0)!important;transform-origin:50% 100%}
+  html.js .mc.mc-hide[data-mc=up]{transform:translate3d(0,64px,0)!important}
+  html.js .mc.mc-hide[data-mc=left]{transform:translate3d(-60px,0,0) rotate(-3deg)!important}
+  html.js .mc.mc-hide[data-mc=right]{transform:translate3d(60px,0,0) rotate(3deg)!important}
+  html.js .mc.mc-hide[data-mc=zoom]{transform:scale(.78)!important}
+  html.js .mc.mc-hide[data-mc=drop]{transform:translate3d(0,-56px,0) rotate(-2.5deg) scale(.94)!important}
+  html.js .mc.mc-hide[data-mc=spin]{transform:perspective(900px) rotateY(80deg) rotateZ(4deg) scale(.9)!important;transform-origin:100% 50%}
+}
+@media(prefers-reduced-motion:reduce){html.js .mc.mc-hide{opacity:1!important;transform:none!important}}
