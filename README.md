@@ -1,17 +1,15 @@
-# S. M. Shoaib portfolio (v5, live AI)
-1. Push this folder to GitHub, import in Vercel (Framework Preset: Other, no build command).
-2. Project > Settings > Environment Variables: add ANTHROPIC_API_KEY (your key). Optional: CHAT_MODEL, QA_MODEL.
-3. Redeploy. The "Ask my AI" section then uses /api/chat (Claude + tools + QA gate). Without the key it falls back to retrieval-only.
-Never put the key in index.html or app.js.
+# S. M. Shoaib Portfolio
 
+This is a static portfolio website. The portfolio chatbot/serverless API has been removed from this build.
 
-## Emerald neural motion update
-- Added a responsive neural-context section with animated connected nodes, orbit rings, and an AI core.
-- Added image-backed atmospheric layers using bundled portfolio assets; no external image dependency added.
-- Existing app.js, chat endpoint, knowledge base, voice controls, project content, and deployment configuration remain in place.
-- Reduced-motion preferences are respected for the new motion graphics.
+## Deploy to Vercel
+1. Upload this folder to your GitHub repository and import it into Vercel.
+2. Set Framework Preset to **Other**.
+3. Leave Build Command and Output Directory empty/default for a static HTML site.
+4. Deploy. No API key or serverless function is required.
 
-## Premium 3D update
-- premium.css: refined palette (deep emerald base + champagne-gold accents), gold gradients, glass hover states.
-- premium.js: scroll-driven Three.js scene (eased scroll, mouse parallax, velocity FOV kick), 3D card tilt, magnetic buttons.
-- Three.js loads from cdnjs (r128). Scene hides on reduced-motion and without WebGL; old 2D particle canvas is hidden.
+## Main files
+- `index.html` — portfolio content and sections
+- `style.css` and `premium.css` — styling and glass effects
+- `app.js` and `premium.js` — visual interactions, scroll reveals and motion
+- `assets/` — bundled images and hero video
