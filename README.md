@@ -10,3 +10,8 @@ Never put the key in index.html or app.js.
 - Added image-backed atmospheric layers using bundled portfolio assets; no external image dependency added.
 - Existing app.js, chat endpoint, knowledge base, voice controls, project content, and deployment configuration remain in place.
 - Reduced-motion preferences are respected for the new motion graphics.
+
+## Premium 3D update
+- premium.css: refined palette (deep emerald base + champagne-gold accents), gold gradients, glass hover states.
+- premium.js: scroll-driven Three.js scene (eased scroll, mouse parallax, velocity FOV kick), 3D card tilt, magnetic buttons.
+- Three.js loads from cdnjs (r128). Scene hides on reduced-motion and without WebGL; old 2D particle canvas is hidden.
