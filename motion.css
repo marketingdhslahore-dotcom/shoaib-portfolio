@@ -31,20 +31,6 @@
 .hero .btn.pri{animation:mxPulse 2.8s ease-in-out infinite}
 @keyframes mxPulse{0%,100%{box-shadow:0 0 0 0 rgba(49,94,251,.45)}60%{box-shadow:0 0 0 16px rgba(49,94,251,0)}}
 
-/* ---------- marquee bands ---------- */
-.mx-marquee{position:relative;overflow:hidden;padding:18px 0;border-block:1px solid rgba(23,37,84,.12);background:rgba(255,255,255,.55);backdrop-filter:blur(10px)}
-.mx-track{display:flex;width:max-content;animation:mxMq 42s linear infinite}
-.mx-track.rev{animation-direction:reverse;animation-duration:54s;margin-top:8px}
-.mx-track.slow{animation-duration:60s}
-.mx-track span{display:inline-flex;align-items:center;white-space:nowrap;padding:0 30px;font:800 clamp(26px,4.6vw,54px)/1.1 Sora,Inter,system-ui,sans-serif;letter-spacing:-.02em;
-  color:transparent;-webkit-text-stroke:1.2px #172554}
-.mx-track span:nth-child(3n+1){color:#315EFB;-webkit-text-stroke:0}
-.mx-track span::after{content:"✦";margin-left:60px;font-size:.5em;color:var(--mx-gold);-webkit-text-stroke:0}
-.mx-marquee:hover .mx-track{animation-play-state:paused}
-@keyframes mxMq{to{transform:translate3d(-50%,0,0)}}
-.mx-marquee-b{margin-top:30px;background:#172554}
-.mx-marquee-b .mx-track span{-webkit-text-stroke-color:#9db4ff}.mx-marquee-b .mx-track span:nth-child(3n+1){color:#E5A94D}
-
 /* ---------- reveal system ---------- */
 html.js .mx[data-mx]{opacity:0!important;will-change:transform,opacity;
   transition:opacity .9s var(--mx-ease),transform 1.15s var(--mx-ease),clip-path 1.2s var(--mx-ease),filter .9s var(--mx-ease)!important;
@@ -147,7 +133,7 @@ html.js .tl::before{transform-origin:top;transform:scaleY(var(--tlp,1))}
 
 /* ---------- accessibility ---------- */
 @media(prefers-reduced-motion:reduce){
-  .mx-orb,.mx-scan,.mx-track,.hero .copy>*,.hero .facts li,.dash-icon,.bento .ic,.why-card>span,.tl li::before,.stats b,.sec::after,.hero .btn.pri,.hero h1 em span{animation:none!important}
+  .mx-orb,.mx-scan,.hero .copy>*,.hero .facts li,.dash-icon,.bento .ic,.why-card>span,.tl li::before,.stats b,.sec::after,.hero .btn.pri,.hero h1 em span{animation:none!important}
   html.js .mx[data-mx]{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important;transition:none!important}
   [data-par]{translate:none;scale:1.02}
 }
@@ -161,29 +147,88 @@ html.js .tl::before{transform-origin:top;transform:scaleY(var(--tlp,1))}
 @media(hover:none){#agency .rail figcaption span,.proof figcaption span{max-height:0;opacity:0}#agency .rail figure:active figcaption span{max-height:80px;opacity:1;margin-top:4px}}
 
 
-/* ===== update: marquee bands removed ===== */
-.mx-marquee{display:none!important}
+/* =====================================================================
+   v6 — header pill, mobile menu, text fixes, lighter phone rendering
+   ===================================================================== */
 
-/* ===== update: stack pane (LLMs etc.) – description text clearly visible + breathing room ===== */
+/* ---------- stack pane (LLMs etc.): description clearly readable, with breathing room ---------- */
 #lpane{padding:clamp(22px,5vw,36px)!important;box-sizing:border-box}
 #lpane h3{color:#172554!important;opacity:1!important}
-#lpane p{color:#2f3b57!important;opacity:1!important;line-height:1.65;-webkit-text-fill-color:currentColor}
+#lpane p{color:#2f3b57!important;opacity:1!important;line-height:1.65;background:none!important;-webkit-text-fill-color:currentColor!important}
 #lpane *{min-width:0;overflow-wrap:break-word}
 
-/* ===== update: text never touches card / grid edges ===== */
+/* ---------- text never touches card / grid edges ---------- */
 .proj .pt,.dash-card,.why-card,.bento>article,.stats li,.chart{box-sizing:border-box;min-width:0;overflow-wrap:break-word}
 .proj .pt{padding-inline:clamp(20px,5vw,32px)}
 .chips{flex-wrap:wrap}
+.proj .pt p a.btn{display:inline-flex;margin-top:6px}
+
+/* ---------- touch: tap a tile to read its caption ---------- */
+#agency .rail figure.mx-cap figcaption span,.proof figure.mx-cap figcaption span{max-height:140px!important;opacity:1!important;margin-top:4px!important}
+
+/* ---------- header "Let's talk" pill + full-screen menu (phones only) ---------- */
+.mx-hcta,.mx-menu{display:none}
+html.mx-lock,html.mx-lock body{overflow:hidden}
+@keyframes mxSweep{0%,55%{transform:translate3d(-130%,0,0)}100%{transform:translate3d(130%,0,0)}}
+@keyframes mxPing{0%{transform:scale(1);opacity:.7}80%,100%{transform:scale(2.6);opacity:0}}
+@keyframes mxBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+@keyframes mxNudge{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(6px,0,0)}}
 @media(max-width:860px){
-  .proj .pt{padding-block:clamp(20px,5vw,28px)}
-  .layers{gap:10px}
-  #agency .rail figcaption,.proof figcaption{left:16px;right:16px;overflow-wrap:break-word}
+  #nav{display:none!important}
+  .mx-hcta{display:inline-flex;align-items:center;gap:8px;position:relative;overflow:hidden;isolation:isolate;flex:none;
+    margin-left:auto;margin-right:10px;padding:10px 16px 10px 14px;border-radius:999px;
+    font:700 13px/1 Sora,Manrope,system-ui,sans-serif;letter-spacing:.01em;white-space:nowrap;text-decoration:none;color:#fff;
+    background:linear-gradient(135deg,#315EFB 0%,#1d3a9e 60%,#172554 100%);
+    box-shadow:0 8px 18px -8px rgba(49,94,251,.8),0 0 0 1px rgba(255,255,255,.18) inset;-webkit-tap-highlight-color:transparent}
+  .mx-hcta::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);
+    transform:translate3d(-130%,0,0);animation:mxSweep 3.4s ease-in-out infinite}
+  .mx-hcta i{position:relative;width:8px;height:8px;border-radius:50%;background:#E5A94D;flex:none}
+  .mx-hcta i::after{content:"";position:absolute;inset:0;border-radius:50%;background:#E5A94D;animation:mxPing 2s ease-out infinite}
+  .mx-hcta:active{transform:scale(.96)}
+
+  .mx-menu{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;box-sizing:border-box;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:max(16px,env(safe-area-inset-top)) 18px max(22px,env(safe-area-inset-bottom));
+    background:radial-gradient(120% 55% at 100% 0,rgba(49,94,251,.18),transparent 62%),radial-gradient(100% 50% at 0 100%,rgba(229,169,77,.22),transparent 62%),#F7F7F4;
+    opacity:0;transform:translate3d(0,-14px,0);transition:opacity .3s ease,transform .45s var(--mx-ease)}
+  .mx-menu[hidden]{display:none!important}
+  .mx-menu.open{opacity:1;transform:none}
+  .mx-menu-top{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+  .mx-menu-brand{display:flex;flex-direction:column;font:700 17px/1.1 Sora,system-ui,sans-serif;color:#172554}
+  .mx-menu-brand small{font:500 11px/1.4 JetBrains Mono,ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:#5b6784;margin-top:3px}
+  .mx-menu-x{position:relative;flex:none;width:46px;height:46px;border-radius:50%;border:1px solid rgba(23,37,84,.14);background:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .mx-menu-x i{position:absolute;left:14px;right:14px;top:50%;height:2px;margin-top:-1px;border-radius:2px;background:#172554}
+  .mx-menu-x i:first-child{transform:rotate(45deg)}.mx-menu-x i:last-child{transform:rotate(-45deg)}
+  .mx-menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:22px;align-content:start}
+  .mx-menu-grid a{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:18px;min-height:96px;box-sizing:border-box;
+    padding:14px 16px 15px;border-radius:20px;text-decoration:none;color:#172554;background:#fff;border:1px solid rgba(23,37,84,.09);
+    box-shadow:0 12px 26px -18px rgba(23,37,84,.45);font:700 17px/1.2 Sora,Manrope,system-ui,sans-serif;-webkit-tap-highlight-color:transparent;
+    opacity:0;transform:translate3d(0,18px,0) scale(.96);transition:opacity .45s ease,transform .6s var(--mx-ease),background .2s}
+  .mx-menu-grid a b{font:600 12px/1 JetBrains Mono,ui-monospace,monospace;color:#315EFB;letter-spacing:.04em}
+  .mx-menu-grid a:active{background:#eef2ff}
+  .mx-menu-grid a:nth-last-child(2):nth-child(odd){grid-column:1/-1;min-height:76px}
+  .mx-menu.open .mx-menu-grid a{opacity:1;transform:none;transition-delay:calc(var(--i,0)*55ms + 120ms)}
+  .mx-menu-grid .mx-menu-cta{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:center;gap:12px;min-height:72px;overflow:hidden;isolation:isolate;
+    color:#fff;border:0;font-size:19px;background:linear-gradient(120deg,#315EFB,#1d3a9e 55%,#172554);box-shadow:0 18px 34px -16px rgba(49,94,251,.9)}
+  .mx-menu-grid .mx-menu-cta:active{background:linear-gradient(120deg,#315EFB,#1d3a9e 55%,#172554)}
+  .mx-menu-cta::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);transform:translate3d(-130%,0,0);animation:mxSweep 3s ease-in-out 1s infinite}
+  .mx-menu-cta em{font-style:normal;display:inline-block;animation:mxNudge 1.6s ease-in-out infinite}
+  .mx-menu.open .mx-menu-grid .mx-menu-cta{animation:mxBreathe 2.8s ease-in-out 1.2s infinite}
 }
 
-/* ===== update: phone cards – flip / fly in, random each time, replay on every scroll ===== */
+/* ---------- phones: lighter rendering so the page scrolls smoothly ---------- */
 @media(max-width:860px){
+  .mx-orb{animation:none!important}
+  .mx-orbs .o1,.mx-orbs .o2,.mx-orbs .o3{translate:none}
+  .mx-scan{display:none!important}
+  .hero h1 em span,.stats b,.hero .btn.pri,.sec:not(.end)::after,.tl li::before,.dash-icon,.bento .ic,.why-card>span,.wave i,.dash-spark i{animation:none!important}
+  main *,.overview-dashboard *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  #agency .rail figure,.proof figure{background:rgba(255,255,255,.92)!important}
+  #agency .rail figcaption,.proof figcaption{background:rgba(10,18,48,.66)!important}
+  [data-par]{translate:none!important;scale:1!important}
+
+  /* shuffled looping card transitions (hidden only while off-screen) */
   html.js .mc{transition:opacity .75s var(--mx-ease),transform 1s var(--mx-ease)!important;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-  html.js .mc.mc-hide{opacity:0!important;transition:none!important;will-change:transform,opacity}
+  html.js .mc.mc-hide{opacity:0!important;transition:none!important}
   html.js .mc.mc-hide[data-mc=flipy]{transform:perspective(900px) rotateY(-78deg) scale(.92)!important;transform-origin:0 50%}
   html.js .mc.mc-hide[data-mc=flipx]{transform:perspective(900px) rotateX(70deg) translate3d(0,50px,0)!important;transform-origin:50% 100%}
   html.js .mc.mc-hide[data-mc=up]{transform:translate3d(0,64px,0)!important}
@@ -193,4 +238,12 @@ html.js .tl::before{transform-origin:top;transform:scaleY(var(--tlp,1))}
   html.js .mc.mc-hide[data-mc=drop]{transform:translate3d(0,-56px,0) rotate(-2.5deg) scale(.94)!important}
   html.js .mc.mc-hide[data-mc=spin]{transform:perspective(900px) rotateY(80deg) rotateZ(4deg) scale(.9)!important;transform-origin:100% 50%}
 }
-@media(prefers-reduced-motion:reduce){html.js .mc.mc-hide{opacity:1!important;transform:none!important}}
+
+/* the hero scan no longer blends (cheaper, same look) */
+.mx-scan{mix-blend-mode:normal}
+
+@media(prefers-reduced-motion:reduce){
+  .mx-hcta::before,.mx-hcta i::after,.mx-menu-cta::before,.mx-menu-cta em,.mx-menu.open .mx-menu-grid .mx-menu-cta{animation:none!important}
+  html.js .mc.mc-hide{opacity:1!important;transform:none!important}
+  .mx-menu,.mx-menu-grid a{transition:none!important}
+}
