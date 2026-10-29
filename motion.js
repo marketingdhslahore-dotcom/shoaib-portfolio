@@ -41,8 +41,6 @@ function init(){
   assign('.proj',['left','right'],{stagger:false});
   assign('.stats li',['zoom','zoom','zoom','zoom'],{tilt:1});
   assign('.chart',['left','right'],{stagger:false,tilt:1});
-  assign('#agency .rail figure',['clip'],{img:1,tilt:1});
-  assign('.proof figure',['clip'],{img:1,tilt:1});
   assign('.tl li',['left','right','left','right']);
   assign('.mp,.cp,.about-photo',['clip'],{img:1,stagger:false});
   assign('.cc,.brain-layout',['zoom'],{stagger:false});
@@ -78,8 +76,27 @@ function init(){
     el.addEventListener('pointerleave',function(){cancelAnimationFrame(raf);el.style.transition='transform .6s cubic-bezier(.16,1,.3,1)';el.style.transform=''});
   }
 
+
+  /* ---- scroll "road" effect: tiles tilt back and converge like a road, then flatten as they reach you ---- */
+  var tiles=$$('#agency .rail figure,.proof figure');
+  tiles.forEach(function(el){el.classList.remove('rv');el.classList.add('in');el.setAttribute('data-road','1')});
+  function roadFrame(vh){
+    var phone=innerWidth<=860,W=innerWidth;
+    tiles.forEach(function(el){
+      var r=el.getBoundingClientRect();
+      if(r.bottom<-vh*.6||r.top>vh*1.6){return}
+      var cy=r.top+r.height/2,cx=((r.left+r.width/2)-W/2)/(W/2);
+      var t=Math.min(1,Math.max(0,(cy-vh*.6)/(vh*.55)));          /* entering from below */
+      var u=Math.min(1,Math.max(0,(vh*.16-cy)/(vh*.45)));         /* leaving above */
+      if(t<.003&&u<.003){el.style.transform='';el.style.opacity='';return}
+      var z=(phone?-220:-420)*t-(phone?60:140)*u,y=(phone?90:150)*t,rx=(phone?30:46)*t-(phone?10:16)*u,sx=phone?0:-cx*90*t;
+      el.style.transform='perspective(1100px) translate3d('+sx.toFixed(1)+'px,'+y.toFixed(1)+'px,'+z.toFixed(1)+'px) rotateX('+rx.toFixed(2)+'deg) scale('+(1-.06*t-.04*u).toFixed(3)+')';
+      el.style.opacity=(1-.72*t-.45*u).toFixed(3);
+    });
+  }
+
   /* ---- scroll loop: parallax, orbs, timeline line, spotlight ---- */
-  var pars=$$('.proj .shot img,#agency .rail img,.about-photo img,.mp img,.cp img');
+  var pars=$$('.proj .shot img,.about-photo img,.mp img,.cp img');
   pars.forEach(function(im){im.setAttribute('data-par','1')});
   var vis=new Set();
   var pio=new IntersectionObserver(function(es){es.forEach(function(e){e.isIntersecting?vis.add(e.target):vis.delete(e.target)})},{rootMargin:'20% 0px'});
@@ -91,6 +108,7 @@ function init(){
     orbs.style.setProperty('--pg',Math.min(1,scrollY/max).toFixed(4));
     var amp=small()?14:34;
     vis.forEach(function(im){var r=im.parentElement.getBoundingClientRect();var p=((r.top+r.height/2)-vh/2)/vh;im.style.setProperty('--py',(p*-amp).toFixed(1)+'px')});
+    roadFrame(vh);
     if(tl){var r=tl.getBoundingClientRect();var p=Math.min(1,Math.max(0,(vh*.75-r.top)/Math.max(1,r.height)));tl.style.setProperty('--tlp',p.toFixed(3))}
   }
   function req(){if(!ticking){ticking=true;requestAnimationFrame(frame)}}

@@ -82,64 +82,68 @@ html.js .tl::before{transform-origin:top;transform:scaleY(var(--tlp,1))}
 .sec:not(.end)::after{animation:mxNum 9s ease-in-out infinite alternate}
 @keyframes mxNum{to{transform:translate3d(-24px,18px,0) rotate(-3deg)}}
 
-/* ---------- AGENCY: picture-fitted grid (replaces side-scroll rail) ---------- */
-#agency .rail{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-flow:dense;grid-auto-rows:clamp(150px,15.5vw,215px);gap:16px;
-  max-width:1240px;margin:8px auto 0;padding:6px max(16px,5vw) 0!important;overflow:visible!important;cursor:default!important;scroll-snap-type:none!important}
-#agency .rail figure{position:relative;margin:0;min-width:0;width:auto!important;flex:none!important;border-radius:22px;overflow:hidden;background:#0d1530;border:0;box-shadow:0 22px 50px -28px rgba(23,37,84,.55)}
-#agency .rail figure img{display:block;width:100%;height:100%;aspect-ratio:auto;object-fit:cover;transform:none!important;filter:saturate(1.05)}
-#agency .rail figure::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(7,14,40,.9),rgba(7,14,40,.1) 55%,transparent);pointer-events:none;opacity:.9;transition:opacity .5s}
-#agency .rail figcaption{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:18px 20px;background:none!important;backdrop-filter:none!important;color:#E5A94D;transition:transform .6s var(--mx-ease)}
-#agency .rail figcaption b{color:#fff;font-size:clamp(15px,1.6vw,20px)}
-#agency .rail figcaption span{color:#cdd8f5;font-size:13px;line-height:1.5;max-height:0;opacity:0;overflow:hidden;margin:0;transition:max-height .6s var(--mx-ease),opacity .5s,margin .5s}
-#agency .rail figure:hover figcaption span{max-height:90px;opacity:1;margin-top:6px}
-#agency .rail figure:nth-child(1){grid-column:span 4;grid-row:span 2}
-#agency .rail figure:nth-child(2),#agency .rail figure:nth-child(3){grid-column:span 2}
-#agency .rail figure:nth-child(4){grid-column:span 3}
-#agency .rail figure:nth-child(5){grid-column:span 3;grid-row:span 2}
-#agency .rail figure:nth-child(6){grid-column:span 3}
-#agency .rail figure:nth-child(1) figcaption span{max-height:90px;opacity:1;margin-top:6px}
-
-/* ---------- RESULTS: dashboard-proof gallery ---------- */
-.proof-title{margin:48px 0 14px;padding:0;font-size:clamp(20px,2.4vw,30px)}
-.proof{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.6fr);width:100%;grid-template-rows:repeat(2,clamp(190px,21vw,300px));gap:16px;margin:0 auto}
-.proof figure{position:relative;margin:0;border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 22px 50px -28px rgba(23,37,84,.5);border:1px solid rgba(23,37,84,.12);min-width:0}
+/* ---------- PICTURE GRIDS: one cell per picture, glass tiles ---------- */
+#agency .rail{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;max-width:1240px;margin:10px auto 0;
+  padding:8px max(16px,5vw) 12px!important;overflow:visible!important;cursor:default!important;scroll-snap-type:none!important;perspective:1400px}
+.proof{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.6fr);grid-template-rows:repeat(2,clamp(190px,21vw,300px));gap:22px;width:100%;margin:0 auto;perspective:1400px}
+.proof-title{margin:52px 0 16px;padding:0;font-size:clamp(20px,2.4vw,30px)}
 .proof figure:nth-child(1){grid-row:span 2}
-.proof img{display:block;width:100%;height:100%;object-fit:cover;object-position:top left}
-.proof figure::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(7,14,40,.85),transparent 45%);pointer-events:none}
-.proof figcaption{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:16px 20px;color:#cdd8f5;font-size:13px;line-height:1.5}
-.proof figcaption b{display:block;color:#fff;font:700 clamp(15px,1.6vw,19px) Sora,Inter,sans-serif;margin-bottom:3px}
-.proof figcaption span{color:#cdd8f5!important}
 
-/* ---------- picture shine + parallax plumbing ---------- */
-[data-par]{translate:0 var(--py,0px);scale:var(--sc,1.08);transition:scale .9s var(--mx-ease)}
-figure:hover>[data-par],.shot:hover [data-par],.cp:hover [data-par],.mp:hover [data-par],.about-photo:hover [data-par]{--sc:1.2}
-.shot,.mp,.cp,.about-photo{overflow:hidden}
-#agency .rail figure::before,.proof figure::before{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;z-index:3;pointer-events:none;transform:skewX(-20deg) translate3d(0,0,0);
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transition:left 1.1s var(--mx-ease)}
+/* glass tile (agency + proof) */
+#agency .rail figure,.proof figure{position:relative;margin:0!important;min-width:0;width:auto!important;flex:none!important;
+  grid-column:auto!important;grid-row:auto;padding:10px;border-radius:28px;overflow:hidden;
+  background:linear-gradient(145deg,rgba(255,255,255,.62),rgba(255,255,255,.20))!important;
+  border:1px solid rgba(255,255,255,.85)!important;
+  box-shadow:0 28px 60px -30px rgba(23,37,84,.5),0 2px 0 rgba(255,255,255,.7) inset,0 -1px 0 rgba(255,255,255,.25) inset!important;
+  -webkit-backdrop-filter:blur(20px) saturate(170%);backdrop-filter:blur(20px) saturate(170%);
+  transform-style:preserve-3d;will-change:transform,opacity;transition:box-shadow .5s,border-color .5s}
+#agency .rail figure{aspect-ratio:16/11}
+#agency .rail figure:hover,.proof figure:hover{border-color:rgba(49,94,251,.45)!important;box-shadow:0 36px 70px -28px rgba(49,94,251,.45),0 2px 0 rgba(255,255,255,.8) inset!important}
+#agency .rail figure img,.proof figure img{display:block;width:100%;height:100%;aspect-ratio:auto;object-fit:cover;object-position:top left;border-radius:19px;
+  transform:none!important;filter:saturate(1.05);transition:scale .9s var(--mx-ease)!important;scale:1}
+#agency .rail figure:hover img,.proof figure:hover img{scale:1.045}
+#agency .rail figure::after,.proof figure::after{content:"";position:absolute;inset:10px;border-radius:19px;pointer-events:none;
+  background:linear-gradient(0deg,rgba(7,14,40,.55),transparent 42%);opacity:1}
+/* frosted caption plate */
+#agency .rail figcaption,.proof figcaption{position:absolute;left:22px;right:22px;bottom:22px;z-index:3;padding:12px 16px;border-radius:16px;
+  color:#E5A94D;background:rgba(10,18,48,.38)!important;border:1px solid rgba(255,255,255,.32);
+  -webkit-backdrop-filter:blur(16px) saturate(170%)!important;backdrop-filter:blur(16px) saturate(170%)!important;
+  box-shadow:0 1px 0 rgba(255,255,255,.35) inset}
+#agency .rail figcaption b,.proof figcaption b{display:block;color:#fff;font:700 clamp(14px,1.5vw,18px)/1.25 Sora,Inter,sans-serif;margin:0}
+#agency .rail figcaption span,.proof figcaption span{display:block;color:#dbe4ff!important;font-size:12.5px;line-height:1.5;margin:4px 0 0;max-height:none;opacity:1}
+/* light sweep */
+#agency .rail figure::before,.proof figure::before{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;z-index:4;pointer-events:none;transform:skewX(-20deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transition:left 1.1s var(--mx-ease)}
 #agency .rail figure:hover::before,.proof figure:hover::before{left:130%}
 
+/* ---------- parallax plumbing (other pictures) ---------- */
+[data-par]{translate:0 var(--py,0px);scale:var(--sc,1.08);transition:scale .9s var(--mx-ease)}
+.shot:hover [data-par],.cp:hover [data-par],.mp:hover [data-par],.about-photo:hover [data-par]{--sc:1.14}
+.shot,.mp,.cp,.about-photo{overflow:hidden}
+
+/* floating HUD text over the hero video is removed */
+.hero .hud-label{display:none!important}
+
 /* ---------- tablet / phone grids ---------- */
+@media(max-width:1000px){
+  #agency .rail{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+}
 @media(max-width:860px){
-  #agency .rail{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:clamp(150px,34vw,230px);gap:12px;padding-left:16px!important;padding-right:16px!important}
-  #agency .rail figure:nth-child(1){grid-column:span 2;grid-row:span 2}
-  #agency .rail figure:nth-child(2),#agency .rail figure:nth-child(3),#agency .rail figure:nth-child(4),#agency .rail figure:nth-child(5){grid-column:span 1;grid-row:span 1}
-  #agency .rail figure:nth-child(6){grid-column:span 2;grid-row:span 1}
-  #agency .rail figcaption span{max-height:90px;opacity:1;margin-top:4px;font-size:12px}
-  .proof{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto;padding:0 16px;gap:12px}
-  .proof figure:nth-child(1){grid-row:span 1;grid-column:span 2;height:clamp(260px,60vw,420px)}
-  .proof figure:nth-child(2),.proof figure:nth-child(3){height:clamp(170px,38vw,260px)}
+  .proof{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto;padding:0 16px;gap:16px}
+  .proof figure:nth-child(1){grid-row:span 1;grid-column:span 2;height:clamp(300px,64vw,460px)}
+  .proof figure:nth-child(2),.proof figure:nth-child(3){height:clamp(190px,40vw,280px)}
+  #agency .rail{padding-left:16px!important;padding-right:16px!important}
   .mx-spot{display:none}
 }
 @media(max-width:560px){
-  #agency .rail{grid-template-columns:minmax(0,1fr);grid-auto-rows:auto}
-  #agency .rail figure,#agency .rail figure:nth-child(n){grid-column:span 1;grid-row:span 1;aspect-ratio:16/10}
-  .proof{grid-template-columns:minmax(0,1fr)}
-  .proof figure:nth-child(n){grid-column:span 1;height:auto;aspect-ratio:16/10}
+  #agency .rail{grid-template-columns:minmax(0,1fr);gap:14px}
+  #agency .rail figure{aspect-ratio:16/12}
+  .proof{grid-template-columns:minmax(0,1fr);gap:14px}
+  .proof figure:nth-child(n){grid-column:span 1;height:auto;aspect-ratio:16/11}
   .proof figure:nth-child(1){aspect-ratio:3/4}
-  .mx-marquee{padding:12px 0}
+  #agency .rail figcaption,.proof figcaption{left:18px;right:18px;bottom:18px;padding:10px 12px}
   .mx-orb{width:70vmax;height:70vmax}
 }
-@media(hover:none){#agency .rail figcaption span{max-height:90px;opacity:1;margin-top:4px}}
 
 /* ---------- accessibility ---------- */
 @media(prefers-reduced-motion:reduce){
@@ -148,7 +152,10 @@ figure:hover>[data-par],.shot:hover [data-par],.cp:hover [data-par],.mp:hover [d
   [data-par]{translate:none;scale:1.02}
 }
 
-.proof img{scale:1!important;translate:none!important}
-html.js .proof .mx-img img{scale:1.15!important}html.js .proof .mx-img.mx-in img{scale:1!important}
-.mx-marquee:not(.mx-marquee-b){padding-bottom:84px;margin-bottom:-60px;z-index:0}
-@media(max-width:560px){.mx-marquee:not(.mx-marquee-b){padding-bottom:72px}}
+
+
+/* compact caption: title always, description on hover so the picture stays visible */
+#agency .rail figcaption span,.proof figcaption span{max-height:0;opacity:0;overflow:hidden;margin:0;transition:max-height .6s var(--mx-ease),opacity .4s,margin .4s}
+#agency .rail figure:hover figcaption span,.proof figure:hover figcaption span{max-height:80px;opacity:1;margin-top:4px}
+#agency .rail figcaption,.proof figcaption{padding:10px 14px}
+@media(hover:none){#agency .rail figcaption span,.proof figcaption span{max-height:0;opacity:0}#agency .rail figure:active figcaption span{max-height:80px;opacity:1;margin-top:4px}}
