@@ -22,3 +22,10 @@ This is a static portfolio website. The portfolio chatbot/serverless API has bee
 - Added final mobile spacing/overflow safeguards for hero, cards, stack and navigation.
 - Checked JavaScript syntax and verified all local HTML asset references.
 - Note: real-device autoplay can still vary by browser, battery saver and data-saving settings.
+
+
+## Why work with me card refresh (2026-10-29)
+- Reworked the four Why Work With Me cards with distinct cobalt, gold, navy and teal treatments.
+- Added staggered scroll-in reveals, hover lift, accent lighting and responsive single-column mobile layout.
+- Kept the existing portfolio content and bundled media unchanged.
+- Validation: checked local HTML asset paths and JavaScript syntax with Node.js.
