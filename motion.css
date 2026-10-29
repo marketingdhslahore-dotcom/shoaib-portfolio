@@ -1,0 +1,154 @@
+/* ===== motion.css — heavy animation layer + picture-driven grids (loaded last) ===== */
+:root{--mx-ease:cubic-bezier(.16,1,.3,1);--mx-blue:#315EFB;--mx-gold:#E5A94D;--mx-navy:#172554;--mx-teal:#238b81}
+
+/* ---------- ambient background ---------- */
+.mx-orbs{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.mx-orb{position:absolute;border-radius:50%;width:48vmax;height:48vmax;will-change:transform}
+.mx-orb.o1{left:-14vmax;top:-10vmax;background:radial-gradient(closest-side,rgba(49,94,251,.30),transparent);animation:mxo1 24s ease-in-out infinite alternate}
+.mx-orb.o2{right:-16vmax;top:26vh;background:radial-gradient(closest-side,rgba(229,169,77,.26),transparent);animation:mxo2 28s ease-in-out infinite alternate}
+.mx-orb.o3{left:18vw;bottom:-22vmax;background:radial-gradient(closest-side,rgba(35,139,129,.24),transparent);animation:mxo3 32s ease-in-out infinite alternate}
+.mx-orbs .o1,.mx-orbs .o2,.mx-orbs .o3{translate:0 calc(var(--pg,0)*-30vh)}
+@keyframes mxo1{to{transform:translate3d(34vw,26vh,0) scale(1.3)}}
+@keyframes mxo2{to{transform:translate3d(-30vw,-18vh,0) scale(.8)}}
+@keyframes mxo3{to{transform:translate3d(30vw,-24vh,0) scale(1.25)}}
+.mx-spot{position:fixed;left:0;top:0;width:560px;height:560px;margin:-280px 0 0 -280px;border-radius:50%;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(49,94,251,.16),transparent);transform:translate3d(var(--sx,-999px),var(--sy,-999px),0)}
+
+/* ---------- hero entrance + scan ---------- */
+@keyframes mxHeroIn{from{opacity:0;transform:translate3d(0,46px,0) scale(.97);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+@keyframes mxPop{from{opacity:0;transform:translate3d(0,40px,0) scale(.7) rotate(-4deg)}to{opacity:1;transform:none}}
+.hero .copy>*{animation:mxHeroIn 1.1s var(--mx-ease) both}
+.hero .copy>.hi{animation-delay:.15s}.hero .copy>h1{animation-delay:.3s}.hero .copy>.role{animation-delay:.5s}
+.hero .copy>.sub{animation-delay:.68s}.hero .copy>.btns{animation-delay:.85s}
+.hero .facts li{animation:mxPop .9s var(--mx-ease) both}
+.hero .facts li:nth-child(1){animation-delay:1.0s}.hero .facts li:nth-child(2){animation-delay:1.12s}.hero .facts li:nth-child(3){animation-delay:1.24s}
+.hero h1 em span{display:inline-block;animation:mxShimmer 5s linear infinite}
+@keyframes mxShimmer{0%,100%{filter:drop-shadow(0 0 0 rgba(255,255,255,0))}50%{filter:drop-shadow(0 0 22px rgba(125,160,255,.65))}}
+.mx-scan{position:absolute;left:0;right:0;top:0;height:140px;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(125,255,208,.10) 50%,rgba(125,255,208,.35) 50.4%,transparent 51%);
+  animation:mxScan 7s linear infinite;mix-blend-mode:screen}
+@keyframes mxScan{from{transform:translate3d(0,-140px,0)}to{transform:translate3d(0,110vh,0)}}
+.hero .btn.pri{animation:mxPulse 2.8s ease-in-out infinite}
+@keyframes mxPulse{0%,100%{box-shadow:0 0 0 0 rgba(49,94,251,.45)}60%{box-shadow:0 0 0 16px rgba(49,94,251,0)}}
+
+/* ---------- marquee bands ---------- */
+.mx-marquee{position:relative;overflow:hidden;padding:18px 0;border-block:1px solid rgba(23,37,84,.12);background:rgba(255,255,255,.55);backdrop-filter:blur(10px)}
+.mx-track{display:flex;width:max-content;animation:mxMq 42s linear infinite}
+.mx-track.rev{animation-direction:reverse;animation-duration:54s;margin-top:8px}
+.mx-track.slow{animation-duration:60s}
+.mx-track span{display:inline-flex;align-items:center;white-space:nowrap;padding:0 30px;font:800 clamp(26px,4.6vw,54px)/1.1 Sora,Inter,system-ui,sans-serif;letter-spacing:-.02em;
+  color:transparent;-webkit-text-stroke:1.2px #172554}
+.mx-track span:nth-child(3n+1){color:#315EFB;-webkit-text-stroke:0}
+.mx-track span::after{content:"✦";margin-left:60px;font-size:.5em;color:var(--mx-gold);-webkit-text-stroke:0}
+.mx-marquee:hover .mx-track{animation-play-state:paused}
+@keyframes mxMq{to{transform:translate3d(-50%,0,0)}}
+.mx-marquee-b{margin-top:30px;background:#172554}
+.mx-marquee-b .mx-track span{-webkit-text-stroke-color:#9db4ff}.mx-marquee-b .mx-track span:nth-child(3n+1){color:#E5A94D}
+
+/* ---------- reveal system ---------- */
+html.js .mx[data-mx]{opacity:0!important;will-change:transform,opacity;
+  transition:opacity .9s var(--mx-ease),transform 1.15s var(--mx-ease),clip-path 1.2s var(--mx-ease),filter .9s var(--mx-ease)!important;
+  transition-delay:var(--d,0ms)!important}
+html.js .mx[data-mx=up]{transform:translate3d(0,70px,0)!important}
+html.js .mx[data-mx=left]{transform:translate3d(-110px,0,0) rotate(-2.5deg)!important;filter:blur(8px)}
+html.js .mx[data-mx=right]{transform:translate3d(110px,0,0) rotate(2.5deg)!important;filter:blur(8px)}
+html.js .mx[data-mx=zoom]{transform:scale(.78)!important;filter:blur(8px)}
+html.js .mx[data-mx=flip]{transform:perspective(900px) rotateX(32deg) translate3d(0,60px,0) scale(.94)!important;transform-origin:50% 100%}
+html.js .mx[data-mx=head]{transform:translate3d(0,48px,0) skewY(3deg)!important;clip-path:inset(0 0 100% 0)}
+html.js .mx[data-mx=clip]{clip-path:inset(100% 0 0 0 round 22px);transform:translate3d(0,40px,0) scale(.96)!important}
+html.js .mx[data-mx].mx-in{opacity:1!important;transform:none!important;filter:none!important}
+html.js .mx[data-mx=head].mx-in{clip-path:inset(-20% -5% -20% -5%)}
+html.js .mx[data-mx=clip].mx-in{clip-path:inset(0 0 0 0 round 22px)}
+/* image settle */
+html.js .mx-img img{scale:1.35;transition:scale 1.8s var(--mx-ease)}
+html.js .mx-img.mx-in img{scale:1.08}
+@media(max-width:860px){
+  html.js .mx[data-mx=left]{transform:translate3d(-36px,0,0)!important;filter:none}
+  html.js .mx[data-mx=right]{transform:translate3d(36px,0,0)!important;filter:none}
+  html.js .mx[data-mx=zoom],html.js .mx[data-mx=flip]{filter:none}
+  html.js .mx[data-mx=up]{transform:translate3d(0,44px,0)!important}
+}
+
+/* ---------- idle motion ---------- */
+@keyframes mxFloat{0%,100%{transform:translate3d(0,0,0) rotate(0)}50%{transform:translate3d(0,-8px,0) rotate(4deg)}}
+.dash-icon,.bento .ic,.why-card>span{animation:mxFloat 5.5s ease-in-out infinite}
+.bento article:nth-child(2n) .ic,.dash-card:nth-child(2n) .dash-icon,.why-card:nth-child(2n)>span{animation-delay:-2.2s}
+.bento article:nth-child(3n) .ic{animation-delay:-3.6s}
+.tl li::before{animation:mxDot 2.6s ease-in-out infinite}
+@keyframes mxDot{0%,100%{box-shadow:0 0 0 5px rgba(49,94,251,.12),0 0 10px rgba(49,94,251,.5)}50%{box-shadow:0 0 0 11px rgba(49,94,251,0),0 0 20px rgba(49,94,251,.9)}}
+html.js .tl::before{transform-origin:top;transform:scaleY(var(--tlp,1))}
+.stats b{animation:mxGlow 4s ease-in-out infinite}
+@keyframes mxGlow{0%,100%{filter:drop-shadow(0 0 0 rgba(49,94,251,0))}50%{filter:drop-shadow(0 0 18px rgba(49,94,251,.55))}}
+.sec:not(.end)::after{animation:mxNum 9s ease-in-out infinite alternate}
+@keyframes mxNum{to{transform:translate3d(-24px,18px,0) rotate(-3deg)}}
+
+/* ---------- AGENCY: picture-fitted grid (replaces side-scroll rail) ---------- */
+#agency .rail{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-flow:dense;grid-auto-rows:clamp(150px,15.5vw,215px);gap:16px;
+  max-width:1240px;margin:8px auto 0;padding:6px max(16px,5vw) 0!important;overflow:visible!important;cursor:default!important;scroll-snap-type:none!important}
+#agency .rail figure{position:relative;margin:0;min-width:0;width:auto!important;flex:none!important;border-radius:22px;overflow:hidden;background:#0d1530;border:0;box-shadow:0 22px 50px -28px rgba(23,37,84,.55)}
+#agency .rail figure img{display:block;width:100%;height:100%;aspect-ratio:auto;object-fit:cover;transform:none!important;filter:saturate(1.05)}
+#agency .rail figure::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(7,14,40,.9),rgba(7,14,40,.1) 55%,transparent);pointer-events:none;opacity:.9;transition:opacity .5s}
+#agency .rail figcaption{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:18px 20px;background:none!important;backdrop-filter:none!important;color:#E5A94D;transition:transform .6s var(--mx-ease)}
+#agency .rail figcaption b{color:#fff;font-size:clamp(15px,1.6vw,20px)}
+#agency .rail figcaption span{color:#cdd8f5;font-size:13px;line-height:1.5;max-height:0;opacity:0;overflow:hidden;margin:0;transition:max-height .6s var(--mx-ease),opacity .5s,margin .5s}
+#agency .rail figure:hover figcaption span{max-height:90px;opacity:1;margin-top:6px}
+#agency .rail figure:nth-child(1){grid-column:span 4;grid-row:span 2}
+#agency .rail figure:nth-child(2),#agency .rail figure:nth-child(3){grid-column:span 2}
+#agency .rail figure:nth-child(4){grid-column:span 3}
+#agency .rail figure:nth-child(5){grid-column:span 3;grid-row:span 2}
+#agency .rail figure:nth-child(6){grid-column:span 3}
+#agency .rail figure:nth-child(1) figcaption span{max-height:90px;opacity:1;margin-top:6px}
+
+/* ---------- RESULTS: dashboard-proof gallery ---------- */
+.proof-title{margin:48px 0 14px;padding:0;font-size:clamp(20px,2.4vw,30px)}
+.proof{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.6fr);width:100%;grid-template-rows:repeat(2,clamp(190px,21vw,300px));gap:16px;margin:0 auto}
+.proof figure{position:relative;margin:0;border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 22px 50px -28px rgba(23,37,84,.5);border:1px solid rgba(23,37,84,.12);min-width:0}
+.proof figure:nth-child(1){grid-row:span 2}
+.proof img{display:block;width:100%;height:100%;object-fit:cover;object-position:top left}
+.proof figure::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(7,14,40,.85),transparent 45%);pointer-events:none}
+.proof figcaption{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:16px 20px;color:#cdd8f5;font-size:13px;line-height:1.5}
+.proof figcaption b{display:block;color:#fff;font:700 clamp(15px,1.6vw,19px) Sora,Inter,sans-serif;margin-bottom:3px}
+.proof figcaption span{color:#cdd8f5!important}
+
+/* ---------- picture shine + parallax plumbing ---------- */
+[data-par]{translate:0 var(--py,0px);scale:var(--sc,1.08);transition:scale .9s var(--mx-ease)}
+figure:hover>[data-par],.shot:hover [data-par],.cp:hover [data-par],.mp:hover [data-par],.about-photo:hover [data-par]{--sc:1.2}
+.shot,.mp,.cp,.about-photo{overflow:hidden}
+#agency .rail figure::before,.proof figure::before{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;z-index:3;pointer-events:none;transform:skewX(-20deg) translate3d(0,0,0);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transition:left 1.1s var(--mx-ease)}
+#agency .rail figure:hover::before,.proof figure:hover::before{left:130%}
+
+/* ---------- tablet / phone grids ---------- */
+@media(max-width:860px){
+  #agency .rail{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:clamp(150px,34vw,230px);gap:12px;padding-left:16px!important;padding-right:16px!important}
+  #agency .rail figure:nth-child(1){grid-column:span 2;grid-row:span 2}
+  #agency .rail figure:nth-child(2),#agency .rail figure:nth-child(3),#agency .rail figure:nth-child(4),#agency .rail figure:nth-child(5){grid-column:span 1;grid-row:span 1}
+  #agency .rail figure:nth-child(6){grid-column:span 2;grid-row:span 1}
+  #agency .rail figcaption span{max-height:90px;opacity:1;margin-top:4px;font-size:12px}
+  .proof{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto;padding:0 16px;gap:12px}
+  .proof figure:nth-child(1){grid-row:span 1;grid-column:span 2;height:clamp(260px,60vw,420px)}
+  .proof figure:nth-child(2),.proof figure:nth-child(3){height:clamp(170px,38vw,260px)}
+  .mx-spot{display:none}
+}
+@media(max-width:560px){
+  #agency .rail{grid-template-columns:minmax(0,1fr);grid-auto-rows:auto}
+  #agency .rail figure,#agency .rail figure:nth-child(n){grid-column:span 1;grid-row:span 1;aspect-ratio:16/10}
+  .proof{grid-template-columns:minmax(0,1fr)}
+  .proof figure:nth-child(n){grid-column:span 1;height:auto;aspect-ratio:16/10}
+  .proof figure:nth-child(1){aspect-ratio:3/4}
+  .mx-marquee{padding:12px 0}
+  .mx-orb{width:70vmax;height:70vmax}
+}
+@media(hover:none){#agency .rail figcaption span{max-height:90px;opacity:1;margin-top:4px}}
+
+/* ---------- accessibility ---------- */
+@media(prefers-reduced-motion:reduce){
+  .mx-orb,.mx-scan,.mx-track,.hero .copy>*,.hero .facts li,.dash-icon,.bento .ic,.why-card>span,.tl li::before,.stats b,.sec::after,.hero .btn.pri,.hero h1 em span{animation:none!important}
+  html.js .mx[data-mx]{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important;transition:none!important}
+  [data-par]{translate:none;scale:1.02}
+}
+
+.proof img{scale:1!important;translate:none!important}
+html.js .proof .mx-img img{scale:1.15!important}html.js .proof .mx-img.mx-in img{scale:1!important}
+.mx-marquee:not(.mx-marquee-b){padding-bottom:84px;margin-bottom:-60px;z-index:0}
+@media(max-width:560px){.mx-marquee:not(.mx-marquee-b){padding-bottom:72px}}

@@ -1,0 +1,56 @@
+/* ===== fix.css — loaded last. Final responsive + visibility fixes ===== */
+
+/* 1. Content must never stay hidden: only animate when JS is running */
+html:not(.js) .rv{opacity:1!important;transform:none!important;filter:none!important}
+.rv{will-change:auto!important}
+
+/* 2. Hero video: clearly visible on every screen */
+.hero{background:#06120f url('assets/hero-v2.jpg') center/cover no-repeat!important}
+.hero video#hv{opacity:1!important;filter:saturate(1) contrast(1.04) brightness(.85)!important;object-fit:cover!important;object-position:70% center!important}
+.hero video#hv.video-fallback{opacity:1!important}
+.hero .shade{background:linear-gradient(90deg,rgba(4,12,10,.78) 0%,rgba(4,12,10,.45) 42%,rgba(4,12,10,.05) 75%),linear-gradient(180deg,rgba(4,12,10,.35),transparent 25%,transparent 70%,rgba(4,12,10,.7))!important}
+.hero .hero-portrait{display:none!important}               /* the video already shows the portrait */
+.hero .term,.hero .cue{display:none!important}               /* decorative; was overlapping the stat cards */
+.hero .copy,.hero h1,.hero .role,.hero .sub{color:#fff!important}
+body,html{overflow-x:hidden}
+img,video{max-width:100%}
+
+/* 3. Header / hamburger: visible on the light header */
+.bar{background:rgba(247,247,244,.94)!important;backdrop-filter:blur(14px)}
+.mb{border-color:rgba(23,37,84,.25)!important;background:#fff!important}
+.mb i{background:#172554!important}
+
+/* 4. Tablet + phone */
+@media(max-width:860px){
+  .hero{min-height:100svh!important;height:auto!important;padding-top:84px}
+  .hero video#hv{object-position:62% center!important}
+  .hero .shade{background:linear-gradient(180deg,rgba(4,12,10,.30) 0%,rgba(4,12,10,.15) 30%,rgba(4,12,10,.78) 72%,rgba(4,12,10,.92) 100%)!important}
+  .hero .copy{position:absolute!important;left:5vw!important;right:5vw!important;width:auto!important;bottom:150px!important;top:auto!important}
+  .hero h1{font-size:clamp(46px,14vw,78px)!important}
+  .hero .sub{font-size:14.5px!important;line-height:1.55!important;max-width:34em}
+  .hero .btns{gap:10px;flex-wrap:wrap}
+  .hero .facts{position:absolute!important;left:5vw!important;right:5vw!important;bottom:18px!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important;max-width:none!important}
+  .hero .facts li{min-width:0!important;padding:10px 8px!important}
+  nav#nav.open{background:#fff!important}
+  nav#nav.open a{color:#172554!important}
+  .why-grid,.dash-grid,.bento,.charts,.stats{grid-template-columns:1fr!important}
+  .stats{display:grid!important;grid-template-columns:1fr 1fr!important}
+  .proj,.stk,.cc,.me,.about-glass,.brain-layout{grid-template-columns:1fr!important}
+  .brain-pills{display:flex;flex-wrap:wrap;gap:6px}
+  .brain-pills span{display:inline-block;margin:0}
+  .brain-visual{min-height:300px}
+  .rail figure{flex:0 0 82vw!important}
+  .sec{padding-left:5vw!important;padding-right:5vw!important}
+  #contact .cp,.about-photo{max-height:360px}
+}
+@media(max-width:420px){
+  .hero .copy{bottom:140px!important}
+  .stats{grid-template-columns:1fr!important}
+}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1!important;transform:none!important;filter:none!important}}
+@media(max-width:860px){
+  .hero .hero-hud{display:none!important}
+  .hero video#hv{top:64px!important;height:calc(100% - 64px)!important}
+  .about-actions{display:flex;flex-wrap:wrap;gap:10px}
+}
+.hero video#hv{object-position:68% 30%!important}

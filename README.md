@@ -29,3 +29,17 @@ This is a static portfolio website. The portfolio chatbot/serverless API has bee
 - Added staggered scroll-in reveals, hover lift, accent lighting and responsive single-column mobile layout.
 - Kept the existing portfolio content and bundled media unchanged.
 - Validation: checked local HTML asset paths and JavaScript syntax with Node.js.
+
+
+## Deploy fix (2026-10-29)
+- Files are now at the ZIP ROOT (index.html is not inside a sub-folder). Upload the CONTENTS of this folder to the GitHub repo root.
+- New hero video/poster use new file names (hero-v2*.mp4/jpg) so Vercel/browsers can't serve the old cached copy.
+- vercel.json no longer marks assets as "immutable"; html/css/js revalidate on every visit.
+- CSS/JS links carry ?v=3 — bump the number when you change those files.
+- fix.css adds final mobile/tablet fixes; content can no longer stay hidden by the scroll-reveal animation.
+
+## Motion + grid update (2026-10-29)
+- motion.css / motion.js: scroll reveals (slide, flip, zoom, clip-wipe), parallax pictures, 3D tilt on desktop, floating icons,
+  marquee bands, ambient orbs, cursor spotlight, hero entrance. Respects prefers-reduced-motion and force-reveals content by timer.
+- Agency pictures now sit in a 6-column picture-fitted grid (big tile + wide + small); 2 columns on tablet, 1 on phone.
+- Unused dashboard screenshots are shown in a "Dashboard proof" grid under Results.
