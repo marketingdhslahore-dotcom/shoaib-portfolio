@@ -429,3 +429,118 @@ html.js .mc.vis.mc-hide{transform:translate3d(0,36px,0) scale(.985)!important}
   .proj.vis,.proj.vis *{max-width:100%}
   .proj.vis .shot img{max-width:100%}
 }
+
+
+/* =====================================================================
+   v9: NEW DROP-DOWN MENU (works at any width where the hamburger shows) + project pictures in a proper grid
+   ===================================================================== */
+.mxm{display:none}
+@media print{.mxm{display:none!important}}
+
+/* header pill: shown whenever our menu is active (no width assumptions) */
+html.mx-menu-on #nav{display:none!important}
+html.mx-menu-on .mx-hcta{display:inline-flex;align-items:center;gap:8px;position:relative;overflow:hidden;isolation:isolate;flex:none;
+  margin-left:auto;margin-right:10px;padding:10px 16px 10px 14px;border-radius:999px;
+  font:700 13px/1 Sora,Manrope,system-ui,sans-serif;letter-spacing:.01em;white-space:nowrap;text-decoration:none;color:#fff;
+  background:linear-gradient(135deg,#315EFB 0%,#1d3a9e 60%,#172554 100%);
+  box-shadow:0 8px 18px -8px rgba(49,94,251,.8),0 0 0 1px rgba(255,255,255,.18) inset;-webkit-tap-highlight-color:transparent}
+html.mx-menu-on .mx-hcta::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);transform:translate3d(-130%,0,0);animation:mxSweep 3.4s ease-in-out infinite}
+html.mx-menu-on .mx-hcta i{position:relative;width:8px;height:8px;border-radius:50%;background:#E5A94D;flex:none}
+html.mx-menu-on .mx-hcta i::after{content:"";position:absolute;inset:0;border-radius:50%;background:#E5A94D;animation:mxPing 2s ease-out infinite}
+
+html.mx-menu-on .mxm{display:block;position:fixed;inset:0;z-index:99999;visibility:hidden;pointer-events:none}
+html.mx-menu-on .mxm[hidden]{display:none!important}
+html.mx-menu-on .mxm.open{visibility:visible;pointer-events:auto}
+.mxm *{box-sizing:border-box}
+.mxm-scrim{position:absolute;inset:0;background:rgba(14,22,52,.4);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);opacity:0;transition:opacity .7s var(--mx-silk)}
+.mxm.open .mxm-scrim{opacity:1}
+.mxm-sheet{position:absolute;left:0;right:0;top:0;max-height:min(94dvh,780px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  padding:max(14px,env(safe-area-inset-top)) clamp(14px,4vw,24px) max(20px,env(safe-area-inset-bottom));border-radius:0 0 28px 28px;
+  background:radial-gradient(120% 40% at 100% 0,rgba(49,94,251,.16),transparent 62%),radial-gradient(100% 36% at 0 100%,rgba(229,169,77,.2),transparent 62%),#F7F7F4;
+  box-shadow:0 44px 90px -34px rgba(23,37,84,.6);transform:translate3d(0,-104%,0);transition:transform .85s var(--mx-silk);will-change:transform}
+.mxm.open .mxm-sheet{transform:none}
+@media(min-width:620px){.mxm-sheet{left:50%;right:auto;width:min(560px,100%);margin-left:max(-280px,-50%);border-radius:0 0 28px 28px}}
+
+.mxm-top{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+.mxm-brand{display:flex;flex-direction:column;font:700 18px/1.1 Sora,system-ui,sans-serif;color:#172554}
+.mxm-brand small{font:500 11px/1.4 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:#5b6784;margin-top:3px}
+.mxm-x{position:relative;flex:none;width:46px;height:46px;border-radius:50%;border:1px solid rgba(23,37,84,.14);background:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .6s var(--mx-silk),background-color .3s}
+.mxm-x:hover{transform:rotate(90deg)}
+.mxm-x i{position:absolute;left:14px;right:14px;top:50%;height:2px;margin-top:-1px;border-radius:2px;background:#172554}
+.mxm-x i:first-child{transform:rotate(45deg)}.mxm-x i:last-child{transform:rotate(-45deg)}
+.mxm-x:focus-visible,.mxm-row:focus-visible,.mxm-cta:focus-visible,.mxm-quick a:focus-visible{outline:2px solid #315EFB;outline-offset:2px}
+
+.mxm-list{display:block;margin-top:14px}
+.mxm-row{display:flex!important;align-items:center;gap:14px;min-height:62px;margin-top:8px;padding:9px 14px 9px 10px;border-radius:18px;text-decoration:none;color:#172554;
+  background:#fff;border:1px solid rgba(23,37,84,.08);box-shadow:0 12px 24px -20px rgba(23,37,84,.5);-webkit-tap-highlight-color:transparent;
+  transition:background-color .45s var(--mx-silk),border-color .45s var(--mx-silk),transform .6s var(--mx-silk),box-shadow .6s var(--mx-silk)}
+.mxm-row b{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:#eaf0ff;color:#315EFB;font:600 12px/1 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.03em;transition:background-color .45s,color .45s,transform .6s var(--mx-silk)}
+.mxm-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.mxm-t strong{font:700 16.5px/1.2 Sora,Manrope,system-ui,sans-serif}
+.mxm-t small{font:500 12.5px/1.35 Manrope,system-ui,sans-serif;color:#5b6784;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mxm-ar{flex:none;font-style:normal;font-size:18px;color:#8a97bd;transition:transform .6s var(--mx-silk),color .4s}
+.mxm-row:active{transform:scale(.985);background:#eef2ff}
+@media(hover:hover){.mxm-row:hover{border-color:rgba(49,94,251,.4);transform:translate3d(0,-2px,0);box-shadow:0 18px 28px -20px rgba(49,94,251,.55)}.mxm-row:hover .mxm-ar{transform:translate3d(4px,0,0);color:#315EFB}}
+.mxm-row.on{background:#eef2ff;border-color:rgba(49,94,251,.45)}
+.mxm-row.on b{background:#315EFB;color:#fff}.mxm-row.on .mxm-ar{color:#315EFB}
+
+.mxm-cta{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;min-height:68px;margin-top:14px;overflow:hidden;isolation:isolate;border-radius:20px;text-decoration:none;color:#fff;
+  font:700 19px/1 Sora,Manrope,system-ui,sans-serif;background:linear-gradient(120deg,#315EFB,#1d3a9e 55%,#172554);box-shadow:0 18px 34px -16px rgba(49,94,251,.9);-webkit-tap-highlight-color:transparent}
+.mxm-cta::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);transform:translate3d(-130%,0,0);animation:mxSweep 3s ease-in-out 1s infinite}
+.mxm-cta em{font-style:normal;display:inline-block;animation:mxNudge 1.6s ease-in-out infinite}
+.mxm-cta:active{transform:scale(.985)}
+.mxm-quick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+.mxm-quick a{display:flex;align-items:center;justify-content:center;min-height:50px;border-radius:16px;text-decoration:none;color:#172554;background:#fff;border:1px solid rgba(23,37,84,.1);font:700 14.5px/1 Sora,Manrope,system-ui,sans-serif;white-space:pre}
+.mxm-quick a:active{background:#eef2ff}
+.mxm-foot{display:flex;align-items:center;justify-content:center;gap:9px;margin:16px 0 2px;font:500 12.5px/1.4 Manrope,system-ui,sans-serif;color:#5b6784}
+.mxm-foot i{width:8px;height:8px;border-radius:50%;background:#2fbf7f;box-shadow:0 0 0 0 rgba(47,191,127,.55);animation:mxmPing 2.2s ease-out infinite}
+@keyframes mxmPing{0%{box-shadow:0 0 0 0 rgba(47,191,127,.5)}80%,100%{box-shadow:0 0 0 9px rgba(47,191,127,0)}}
+
+/* items arrive one by one after the sheet drops; if animation ever fails they are simply visible */
+@keyframes mxmIn{from{opacity:0;transform:translate3d(0,18px,0) scale(.97)}to{opacity:1;transform:none}}
+.mxm.open .mxm-row,.mxm.open .mxm-cta,.mxm.open .mxm-quick,.mxm.open .mxm-foot,.mxm.open .mxm-list{animation:mxmIn .8s var(--mx-silk) both;animation-delay:calc(var(--i,0)*65ms + 260ms)}
+.mxm.open .mxm-list{animation:none}
+.mxm.open .mxm-cta{animation:mxmIn .8s var(--mx-silk) both,mxBreathe 2.8s ease-in-out 1.6s infinite;animation-delay:calc(var(--i,0)*65ms + 260ms),1.8s}
+@media(max-height:640px){.mxm-row{min-height:54px}.mxm-t small{display:none}}
+@media(prefers-reduced-motion:reduce){.mxm-sheet,.mxm-scrim{transition-duration:.01s}.mxm.open .mxm-row,.mxm.open .mxm-cta,.mxm.open .mxm-quick,.mxm.open .mxm-foot,.mxm-cta::before,.mxm-cta em,.mxm-foot i{animation:none!important}}
+
+/* ---------- project cards: every picture sits in the same framed grid cell, never cropped ---------- */
+.proj{--in:clamp(20px,4.6vw,44px)}
+.proj:not(.vis){display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr)!important;gap:clamp(22px,3.6vw,44px)!important;align-items:center;padding:var(--in)!important;box-sizing:border-box;overflow:hidden}
+.proj:not(.vis) .pt{padding:0!important;margin:0;min-width:0;order:1}
+.proj:not(.vis) .shot{order:2}
+.proj:not(.vis).flip .pt{order:2}
+.proj:not(.vis).flip .shot{order:1}
+.proj:not(.vis) .pt h3{margin:0 0 .6em;line-height:1.2;font-size:clamp(21px,4.6vw,28px)}
+.proj:not(.vis) .pt p{line-height:1.7;font-size:clamp(14.5px,3.9vw,16px)}
+.proj:not(.vis) .chips{list-style:none;margin:0 0 1.2em;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+@media(max-width:860px){
+  .proj:not(.vis){grid-template-columns:minmax(0,1fr)!important}
+  .proj:not(.vis).flip .pt{order:1}.proj:not(.vis).flip .shot{order:2}
+}
+.proj:not(.vis) .shot{position:relative;box-sizing:border-box;width:100%;height:auto!important;min-height:0!important;aspect-ratio:auto!important;margin:0;
+  padding:clamp(32px,4vw,40px) clamp(8px,1.2vw,12px) clamp(8px,1.2vw,12px);overflow:hidden;border-radius:clamp(14px,2vw,22px);
+  background:linear-gradient(180deg,#eef2fb,#dfe6f6);
+  box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 30px 60px -28px rgba(23,37,84,.45),0 10px 24px -14px rgba(23,37,84,.25);
+  transition:box-shadow .9s var(--mx-ease),transform .9s var(--mx-ease)}
+.proj:not(.vis) .shot::before{content:"";position:absolute;left:clamp(14px,2vw,18px);top:clamp(11px,1.5vw,14px);width:46px;height:10px;pointer-events:none;z-index:3;
+  background:radial-gradient(circle at 5px 5px,#ff6159 4.5px,transparent 5px),radial-gradient(circle at 23px 5px,#ffbd2e 4.5px,transparent 5px),radial-gradient(circle at 41px 5px,#28c941 4.5px,transparent 5px)}
+.proj:not(.vis) .shot:hover{transform:translate3d(0,-4px,0)}
+.proj .shot img{display:block;width:100%!important;height:auto!important;max-width:100%;border-radius:clamp(8px,1.2vw,12px);background:#fff;box-shadow:0 0 0 1px rgba(23,37,84,.08);
+  translate:0 calc((.5 - var(--vp,.5)) * 22px)!important;scale:1!important}
+.proj:not(.vis) .shot img{max-height:min(540px,70vh);object-fit:contain!important;aspect-ratio:auto!important}
+@media(max-width:860px){.proj .shot img{translate:0 calc((.5 - var(--vp,.5)) * 10px)!important}.proj:not(.vis) .shot{padding:30px 6px 6px;border-radius:14px}}
+.proj:not(.vis) .shot::after{display:none}
+
+/* staggered entrance for every project card */
+html.js .mc.proj .pt>*,html.js .mc.proj .chips li{transition:opacity 1.1s var(--mx-silk),transform 1.4s var(--mx-silk)}
+html.js .mc.proj.mc-hide .pt>*{opacity:0;transform:translate3d(0,22px,0);transition:none}
+html.js .mc.proj.mc-hide .chips li{opacity:0;transform:translate3d(0,14px,0) scale(.92);transition:none}
+html.js .mc.proj.mc-anim .pt>:nth-child(1){transition-delay:.12s}
+html.js .mc.proj.mc-anim .pt>:nth-child(2){transition-delay:.24s}
+html.js .mc.proj.mc-anim .pt>:nth-child(3){transition-delay:.34s}
+html.js .mc.proj.mc-anim .pt>:nth-child(4){transition-delay:.44s}
+html.js .mc.proj.mc-anim .pt>:nth-child(5){transition-delay:.54s}
+html.js .mc.proj.mc-anim .pt>:nth-child(n+6){transition-delay:.64s}
+html.js .mc.proj.mc-hide{transform:translate3d(0,36px,0) scale(.985)!important}
+@media(max-width:860px){html.js .mc.proj.mc-hide .pt>*{transform:translate3d(0,14px,0)}}
