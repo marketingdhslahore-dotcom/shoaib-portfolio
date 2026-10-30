@@ -22,14 +22,13 @@
 .hero .copy>.sub{animation-delay:.68s}.hero .copy>.btns{animation-delay:.85s}
 .hero .facts li{animation:mxPop .9s var(--mx-ease) both}
 .hero .facts li:nth-child(1){animation-delay:1.0s}.hero .facts li:nth-child(2){animation-delay:1.12s}.hero .facts li:nth-child(3){animation-delay:1.24s}
-.hero h1 em span{display:inline-block;animation:mxShimmer 5s linear infinite}
-@keyframes mxShimmer{0%,100%{filter:drop-shadow(0 0 0 rgba(255,255,255,0))}50%{filter:drop-shadow(0 0 22px rgba(125,160,255,.65))}}
+.hero h1 em span{display:inline-block;filter:drop-shadow(0 0 14px rgba(125,160,255,.45));animation:mxShimmer 5s ease-in-out infinite}
+@keyframes mxShimmer{0%,100%{opacity:.86}50%{opacity:1}}
 .mx-scan{position:absolute;left:0;right:0;top:0;height:140px;z-index:2;pointer-events:none;
   background:linear-gradient(180deg,transparent,rgba(125,255,208,.10) 50%,rgba(125,255,208,.35) 50.4%,transparent 51%);
   animation:mxScan 7s linear infinite;mix-blend-mode:screen}
 @keyframes mxScan{from{transform:translate3d(0,-140px,0)}to{transform:translate3d(0,110vh,0)}}
-.hero .btn.pri{animation:mxPulse 2.8s ease-in-out infinite}
-@keyframes mxPulse{0%,100%{box-shadow:0 0 0 0 rgba(49,94,251,.45)}60%{box-shadow:0 0 0 16px rgba(49,94,251,0)}}
+.hero .btn.pri{animation:mxBreathe 2.8s ease-in-out infinite}
 
 /* ---------- reveal system ---------- */
 html.js .mx[data-mx]{opacity:0!important;will-change:transform,opacity;
@@ -61,10 +60,9 @@ html.js .mx-img.mx-in img{scale:1.08}
 .bento article:nth-child(2n) .ic,.dash-card:nth-child(2n) .dash-icon,.why-card:nth-child(2n)>span{animation-delay:-2.2s}
 .bento article:nth-child(3n) .ic{animation-delay:-3.6s}
 .tl li::before{animation:mxDot 2.6s ease-in-out infinite}
-@keyframes mxDot{0%,100%{box-shadow:0 0 0 5px rgba(49,94,251,.12),0 0 10px rgba(49,94,251,.5)}50%{box-shadow:0 0 0 11px rgba(49,94,251,0),0 0 20px rgba(49,94,251,.9)}}
+@keyframes mxDot{0%,100%{transform:scale(1)}50%{transform:scale(1.28)}}
 html.js .tl::before{transform-origin:top;transform:scaleY(var(--tlp,1))}
-.stats b{animation:mxGlow 4s ease-in-out infinite}
-@keyframes mxGlow{0%,100%{filter:drop-shadow(0 0 0 rgba(49,94,251,0))}50%{filter:drop-shadow(0 0 18px rgba(49,94,251,.55))}}
+.stats b{filter:drop-shadow(0 0 10px rgba(49,94,251,.35))}
 .sec:not(.end)::after{animation:mxNum 9s ease-in-out infinite alternate}
 @keyframes mxNum{to{transform:translate3d(-24px,18px,0) rotate(-3deg)}}
 
@@ -171,11 +169,11 @@ html.js .tl::before{transform-origin:top;transform:scaleY(var(--tlp,1))}
 html.mx-lock,html.mx-lock body{overflow:hidden}
 @keyframes mxSweep{0%,55%{transform:translate3d(-130%,0,0)}100%{transform:translate3d(130%,0,0)}}
 @keyframes mxPing{0%{transform:scale(1);opacity:.7}80%,100%{transform:scale(2.6);opacity:0}}
-@keyframes mxBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+@keyframes mxBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
 @keyframes mxNudge{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(6px,0,0)}}
 @media(max-width:860px){
-  #nav{display:none!important}
-  .mx-hcta{display:inline-flex;align-items:center;gap:8px;position:relative;overflow:hidden;isolation:isolate;flex:none;
+  html.mx-menu-on #nav{display:none!important}
+  html.mx-menu-on .mx-hcta{display:inline-flex;align-items:center;gap:8px;position:relative;overflow:hidden;isolation:isolate;flex:none;
     margin-left:auto;margin-right:10px;padding:10px 16px 10px 14px;border-radius:999px;
     font:700 13px/1 Sora,Manrope,system-ui,sans-serif;letter-spacing:.01em;white-space:nowrap;text-decoration:none;color:#fff;
     background:linear-gradient(135deg,#315EFB 0%,#1d3a9e 60%,#172554 100%);
@@ -189,7 +187,7 @@ html.mx-lock,html.mx-lock body{overflow:hidden}
   .mx-menu{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;box-sizing:border-box;overflow-y:auto;-webkit-overflow-scrolling:touch;
     padding:max(16px,env(safe-area-inset-top)) 18px max(22px,env(safe-area-inset-bottom));
     background:radial-gradient(120% 55% at 100% 0,rgba(49,94,251,.18),transparent 62%),radial-gradient(100% 50% at 0 100%,rgba(229,169,77,.22),transparent 62%),#F7F7F4;
-    opacity:0;transform:translate3d(0,-14px,0);transition:opacity .3s ease,transform .45s var(--mx-ease)}
+    opacity:0;transform:translate3d(0,-14px,0);overscroll-behavior:contain;transition:opacity .3s ease,transform .45s var(--mx-ease)}
   .mx-menu[hidden]{display:none!important}
   .mx-menu.open{opacity:1;transform:none}
   .mx-menu-top{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
@@ -203,7 +201,7 @@ html.mx-lock,html.mx-lock body{overflow:hidden}
     padding:14px 16px 15px;border-radius:20px;text-decoration:none;color:#172554;background:#fff;border:1px solid rgba(23,37,84,.09);
     box-shadow:0 12px 26px -18px rgba(23,37,84,.45);font:700 17px/1.2 Sora,Manrope,system-ui,sans-serif;-webkit-tap-highlight-color:transparent;
     opacity:0;transform:translate3d(0,18px,0) scale(.96);transition:opacity .45s ease,transform .6s var(--mx-ease),background .2s}
-  .mx-menu-grid a b{font:600 12px/1 JetBrains Mono,ui-monospace,monospace;color:#315EFB;letter-spacing:.04em}
+  .mx-menu-grid a b{font:500 12px/1 JetBrains Mono,ui-monospace,monospace;color:#315EFB;letter-spacing:.04em}
   .mx-menu-grid a:active{background:#eef2ff}
   .mx-menu-grid a:nth-last-child(2):nth-child(odd){grid-column:1/-1;min-height:76px}
   .mx-menu.open .mx-menu-grid a{opacity:1;transform:none;transition-delay:calc(var(--i,0)*55ms + 120ms)}
@@ -225,25 +223,62 @@ html.mx-lock,html.mx-lock body{overflow:hidden}
   #agency .rail figure,.proof figure{background:rgba(255,255,255,.92)!important}
   #agency .rail figcaption,.proof figcaption{background:rgba(10,18,48,.66)!important}
   [data-par]{translate:none!important;scale:1!important}
-
-  /* shuffled looping card transitions (hidden only while off-screen) */
-  html.js .mc{transition:opacity .75s var(--mx-ease),transform 1s var(--mx-ease)!important;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-  html.js .mc.mc-hide{opacity:0!important;transition:none!important}
-  html.js .mc.mc-hide[data-mc=flipy]{transform:perspective(900px) rotateY(-78deg) scale(.92)!important;transform-origin:0 50%}
-  html.js .mc.mc-hide[data-mc=flipx]{transform:perspective(900px) rotateX(70deg) translate3d(0,50px,0)!important;transform-origin:50% 100%}
-  html.js .mc.mc-hide[data-mc=up]{transform:translate3d(0,64px,0)!important}
-  html.js .mc.mc-hide[data-mc=left]{transform:translate3d(-60px,0,0) rotate(-3deg)!important}
-  html.js .mc.mc-hide[data-mc=right]{transform:translate3d(60px,0,0) rotate(3deg)!important}
-  html.js .mc.mc-hide[data-mc=zoom]{transform:scale(.78)!important}
-  html.js .mc.mc-hide[data-mc=drop]{transform:translate3d(0,-56px,0) rotate(-2.5deg) scale(.94)!important}
-  html.js .mc.mc-hide[data-mc=spin]{transform:perspective(900px) rotateY(80deg) rotateZ(4deg) scale(.9)!important;transform-origin:100% 50%}
 }
+
+/* ---------- shuffled looping card transitions: phone + laptop (hidden only while off-screen) ---------- */
+html{overflow-x:hidden}
+@supports(overflow:clip){html,body{overflow-x:clip}}
+html.js .mc.mc-anim{transition:opacity .8s var(--mx-ease),transform 1.1s var(--mx-ease)!important;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+html.js .mc.mc-hide{opacity:0!important;transition:none!important}
+html.js .mc.mc-hide[data-mc=flipy]{transform:perspective(900px) rotateY(-62deg) scale(.92)!important}
+html.js .mc.mc-hide[data-mc=flipx]{transform:perspective(900px) rotateX(65deg) translate3d(0,50px,0)!important;transform-origin:50% 100%}
+html.js .mc.mc-hide[data-mc=up]{transform:translate3d(0,64px,0)!important}
+html.js .mc.mc-hide[data-mc=left]{transform:translate3d(-34px,0,0) rotate(-2.5deg)!important}
+html.js .mc.mc-hide[data-mc=right]{transform:translate3d(34px,0,0) rotate(2.5deg)!important}
+html.js .mc.mc-hide[data-mc=zoom]{transform:scale(.8)!important}
+html.js .mc.mc-hide[data-mc=drop]{transform:translate3d(0,-56px,0) rotate(-2deg) scale(.94)!important}
+html.js .mc.mc-hide[data-mc=spin]{transform:perspective(900px) rotateY(58deg) rotateZ(3deg) scale(.9)!important}
+@media(min-width:861px){
+  html.js .mc.mc-hide[data-mc=up]{transform:translate3d(0,110px,0) scale(.97)!important}
+  html.js .mc.mc-hide[data-mc=left]{transform:translate3d(-90px,0,0) rotate(-3deg)!important}
+  html.js .mc.mc-hide[data-mc=right]{transform:translate3d(90px,0,0) rotate(3deg)!important}
+  html.js .mc.mc-hide[data-mc=drop]{transform:translate3d(0,-90px,0) rotate(-2.5deg) scale(.94)!important}
+  html.js .mc.mc-hide[data-mc=flipy]{transform:perspective(1200px) rotateY(-68deg) scale(.9)!important}
+  html.js .mc.mc-hide[data-mc=spin]{transform:perspective(1200px) rotateY(64deg) rotateZ(4deg) scale(.88)!important}
+}
+
+/* ---------- laptop tilt (class + variables) ---------- */
+html.js .mc.is-tilt{transform:perspective(1000px) rotateY(var(--ry,0deg)) rotateX(var(--rx,0deg)) translate3d(0,-6px,0);transition:transform .18s ease-out,box-shadow .3s,background-color .3s,border-color .3s,opacity .3s}
+html.js .mc.tilt-out{transition:transform .6s var(--mx-ease),box-shadow .3s,background-color .3s,border-color .3s,opacity .3s}
+
+/* ---------- blur only where it can be seen; loops pause off-screen; print shows everything ---------- */
+html.js .mc.mc-hide{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.mx-off,.mx-off *,.mx-off::before,.mx-off::after,.mx-off *::before,.mx-off *::after{animation-play-state:paused!important}
+@media print{
+  html.js .mc.mc-hide{opacity:1!important;transform:none!important}
+  .mx[data-mx]{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important}
+  .mx-orbs,.mx-spot,.mx-scan,.mx-menu,.mx-hcta{display:none!important}
+}
+
+/* ---------- laptop: animated header "Let's talk" ---------- */
+@media(min-width:861px){
+  #nav .cta{position:relative;overflow:hidden;isolation:isolate;animation:mxBreathe 3s ease-in-out infinite}
+  #nav .cta::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translate3d(-130%,0,0);animation:mxSweep 3.4s ease-in-out infinite}
+}
+
+/* very small phones: header pill stays on one line */
+@media(max-width:360px){
+  .mx-hcta{padding:9px 12px;font-size:12px;margin-right:8px}
+  .mx-hcta i{display:none}
+  .mx-menu-grid{gap:10px}
+}
+.bar .logo{min-width:0}
 
 /* the hero scan no longer blends (cheaper, same look) */
 .mx-scan{mix-blend-mode:normal}
 
 @media(prefers-reduced-motion:reduce){
-  .mx-hcta::before,.mx-hcta i::after,.mx-menu-cta::before,.mx-menu-cta em,.mx-menu.open .mx-menu-grid .mx-menu-cta{animation:none!important}
+  .mx-hcta::before,.mx-hcta i::after,.mx-menu-cta::before,.mx-menu-cta em,.mx-menu.open .mx-menu-grid .mx-menu-cta,#nav .cta,#nav .cta::after{animation:none!important}
   html.js .mc.mc-hide{opacity:1!important;transform:none!important}
   .mx-menu,.mx-menu-grid a{transition:none!important}
 }
