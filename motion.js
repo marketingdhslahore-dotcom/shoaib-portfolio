@@ -231,7 +231,7 @@ function init(){
   function mcShow(c){
     var el=c.el;if(!c.hidden)return;c.hidden=false;
     el.classList.add('mc-anim');el.classList.remove('mc-hide');
-    clearTimeout(el._mcT);el._mcT=setTimeout(function(){el.classList.remove('mc-anim')},1400);
+    clearTimeout(el._mcT);el._mcT=setTimeout(function(){el.classList.remove('mc-anim')},2500);
   }
   function mcHide(c){
     var el=c.el;if(c.hidden)return;c.hidden=true;
@@ -247,9 +247,9 @@ function init(){
     mcCards.forEach(function(c){
       var top=c.top-sy,bot=top+c.h;
       var vis=Math.min(bot,vh)-Math.max(top,0);
-      var need=Math.max(1,Math.min(c.h*0.14,vh*0.12));
+      var need=Math.max(1,Math.min(c.h*0.08,vh*0.07));
       if(c.hidden){if(vis>=need)mcShow(c)}
-      else if(bot<-40||top>vh+40)mcHide(c);                 /* fully off-screen */
+      else if(bot<-160||top>vh+160)mcHide(c);                 /* fully off-screen */
     });
   }
   var cardEls=$$(CARD_SEL).filter(function(el){return !el.querySelector(CARD_SEL)});   /* containers of cards stay still; their cards animate */
@@ -360,4 +360,28 @@ function init(){
   }
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+
+/* ---- Visecore: damped (inertial) scroll-linked motion; runs only while the card is on screen ---- */
+(function(){
+  var card=document.querySelector('.proj.vis');if(!card||!window.IntersectionObserver)return;
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  var cur=.5,tgt=.5,raf=0,on=false;
+  function target(){var r=card.getBoundingClientRect(),vh=innerHeight;
+    var p=(vh-r.top)/(vh+r.height);return Math.max(0,Math.min(1,p))}
+  function loop(){
+    raf=0;tgt=target();cur+=(tgt-cur)*.075;                     /* ease toward the target: no jitter, soft stop */
+    if(Math.abs(tgt-cur)<.0004)cur=tgt;
+    card.style.setProperty('--vp',cur.toFixed(4));
+    if(on)raf=requestAnimationFrame(loop);
+  }
+  new IntersectionObserver(function(es){
+    on=es[0].isIntersecting;
+    if(on&&!raf){cur=target();raf=requestAnimationFrame(loop)}
+    card.classList.toggle('vflow-on',on);
+  },{rootMargin:'10% 0px'}).observe(card);
+  var arr=[];card.addEventListener('pointermove',function(e){
+    if(e.pointerType!=='mouse')return;var r=card.getBoundingClientRect();
+    card.style.setProperty('--mxp',((e.clientX-r.left)/r.width*100).toFixed(1)+'%');
+    card.style.setProperty('--myp',((e.clientY-r.top)/r.height*100).toFixed(1)+'%')},{passive:true});
 })();

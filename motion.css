@@ -282,3 +282,150 @@ html.js .mc.mc-hide{-webkit-backdrop-filter:none!important;backdrop-filter:none!
   html.js .mc.mc-hide{opacity:1!important;transform:none!important}
   .mx-menu,.mx-menu-grid a{transition:none!important}
 }
+
+
+/* =====================================================================
+   v7: VISECORE CARD LAYOUT + DEEPLY SMOOTH TRANSITIONS
+   ===================================================================== */
+
+/* ---- Visecore: the screenshot is a wide website (2.2:1), so it gets its own full-width row
+        instead of being squeezed and cropped in a half-width column ---- */
+.proj.vis{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto auto!important;gap:clamp(18px,3vw,30px)!important;align-items:start}
+.proj.vis .pt{order:1;max-width:760px}
+.proj.vis .shot{order:2;margin:0;width:100%;height:auto!important;min-height:0!important;aspect-ratio:auto!important;
+  position:relative;box-sizing:border-box;padding:clamp(34px,4.4vw,44px) clamp(8px,1.4vw,14px) clamp(8px,1.4vw,14px);
+  margin-inline:auto;max-width:min(100%,1120px);overflow:hidden;border-radius:clamp(14px,2vw,22px);
+  background:linear-gradient(180deg,#eef2fb,#dfe6f6);
+  box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 30px 60px -28px rgba(23,37,84,.45),0 10px 24px -14px rgba(23,37,84,.25);
+  transition:box-shadow .9s var(--mx-ease),transform .9s var(--mx-ease)}
+/* browser bar */
+.proj.vis .shot::before{content:"";position:absolute;left:clamp(14px,2vw,20px);top:clamp(12px,1.7vw,16px);width:46px;height:10px;pointer-events:none;
+  background:radial-gradient(circle at 5px 5px,#ff6159 4.5px,transparent 5px),radial-gradient(circle at 23px 5px,#ffbd2e 4.5px,transparent 5px),radial-gradient(circle at 41px 5px,#28c941 4.5px,transparent 5px)}
+.proj.vis .shot::after{content:"visecore.com";position:absolute;top:clamp(8px,1.2vw,10px);left:50%;translate:-50% 0;max-width:46%;padding:3px 16px;border-radius:99px;
+  background:rgba(255,255,255,.75);color:#51608a;font:500 11px/1.5 Manrope,Inter,sans-serif;letter-spacing:.02em;pointer-events:none;white-space:nowrap}
+.proj.vis .shot img{display:block;width:100%!important;height:auto!important;max-width:100%;aspect-ratio:1200/537;object-fit:contain!important;
+  border-radius:clamp(8px,1.2vw,12px);background:#fff;box-shadow:0 0 0 1px rgba(23,37,84,.08);
+  translate:none!important;scale:1!important;                       /* no parallax crop, no zoom-in: the whole site stays visible */
+  transform:translate3d(0,0,0);transition:transform 1.8s var(--mx-ease),opacity 1.4s ease,filter 1.4s ease}
+.proj.vis .shot:hover{transform:translate3d(0,-4px,0);box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 40px 70px -28px rgba(23,37,84,.5),0 14px 28px -14px rgba(23,37,84,.3)}
+@media(max-width:860px){
+  .proj.vis .shot{padding:30px 6px 6px;border-radius:14px}
+  .proj.vis .shot::after{display:none}
+  .proj.vis .shot::before{top:10px;left:12px;transform:scale(.85);transform-origin:left top}
+}
+
+/* ---- the picture settles in slowly while its card arrives (soft zoom-out + unblur + fade) ---- */
+html.js .mc.mc-hide .shot img{opacity:0;transform:scale(1.07) translate3d(0,14px,0);filter:blur(6px)}
+html.js .mc.mc-anim .shot img{transition:transform 2.2s var(--mx-ease) .15s,opacity 1.5s ease .15s,filter 1.5s ease .15s}
+html.js .mc.mc-hide .shot img{transition:none}
+@media(max-width:860px){html.js .mc.mc-hide .shot img{filter:none}}
+
+/* ---- every card transition: one long, silky ease; gentle distances; no hard flips or spins ---- */
+:root{--mx-silk:cubic-bezier(.22,.8,.24,1)}
+html.js .mc{will-change:auto}
+html.js .mc.mc-anim{will-change:transform,opacity;transition:opacity 1.5s var(--mx-silk),transform 1.7s var(--mx-silk)!important}
+html.js .mc.mc-hide[data-mc=flipy]{transform:perspective(1400px) rotateY(-9deg) translate3d(-26px,26px,0) scale(.965)!important}
+html.js .mc.mc-hide[data-mc=flipx]{transform:perspective(1400px) rotateX(7deg) translate3d(0,44px,0) scale(.97)!important;transform-origin:50% 100%}
+html.js .mc.mc-hide[data-mc=up]{transform:translate3d(0,48px,0) scale(.985)!important}
+html.js .mc.mc-hide[data-mc=left]{transform:translate3d(-34px,18px,0) scale(.98)!important}
+html.js .mc.mc-hide[data-mc=right]{transform:translate3d(34px,18px,0) scale(.98)!important}
+html.js .mc.mc-hide[data-mc=zoom]{transform:translate3d(0,20px,0) scale(.94)!important}
+html.js .mc.mc-hide[data-mc=drop]{transform:translate3d(0,-30px,0) scale(.97)!important}
+html.js .mc.mc-hide[data-mc=spin]{transform:perspective(1400px) rotateY(9deg) translate3d(26px,26px,0) scale(.965)!important}
+@media(min-width:861px){
+  html.js .mc.mc-hide[data-mc=up]{transform:translate3d(0,64px,0) scale(.985)!important}
+  html.js .mc.mc-hide[data-mc=left]{transform:translate3d(-56px,20px,0) scale(.98)!important}
+  html.js .mc.mc-hide[data-mc=right]{transform:translate3d(56px,20px,0) scale(.98)!important}
+  html.js .mc.mc-hide[data-mc=drop]{transform:translate3d(0,-40px,0) scale(.97)!important}
+  html.js .mc.mc-hide[data-mc=flipy]{transform:perspective(1600px) rotateY(-10deg) translate3d(-40px,28px,0) scale(.96)!important}
+  html.js .mc.mc-hide[data-mc=spin]{transform:perspective(1600px) rotateY(10deg) translate3d(40px,28px,0) scale(.96)!important}
+}
+/* tilt hand-off no longer snaps */
+html.js .mc.tilt-out{transition:transform 1.1s var(--mx-silk),box-shadow .6s,background-color .6s,border-color .6s,opacity .6s}
+/* other parallax pictures: slower, softer zoom on hover */
+[data-par]{transition:scale 1.6s var(--mx-silk)}
+.shot:hover [data-par],.cp:hover [data-par],.mp:hover [data-par],.about-photo:hover [data-par]{--sc:1.1}
+
+@media(prefers-reduced-motion:reduce){
+  html.js .mc.mc-hide .shot img{opacity:1;transform:none;filter:none}
+  .proj.vis .shot,.proj.vis .shot img{transition:none!important}
+}
+
+
+/* =====================================================================
+   v8: Visecore alignment, mobile, scroll inertia, staggered entrance, engagement
+   ===================================================================== */
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* ---- alignment: the card owns ONE inset; text, chips, button, picture and steps all sit on it ---- */
+.proj.vis{--in:clamp(20px,4.6vw,44px);padding:var(--in)!important;box-sizing:border-box;gap:clamp(20px,3.2vw,32px)!important;overflow:hidden}
+.proj.vis .pt{padding:0!important;margin:0;max-width:720px;display:block}
+.proj.vis .pt h3{margin:0 0 .6em;line-height:1.2;font-size:clamp(21px,5.2vw,30px)}
+.proj.vis .pt p{margin:0 0 1em;line-height:1.7;font-size:clamp(14.5px,3.9vw,16.5px)}
+.proj.vis .chips{list-style:none;margin:0 0 1.3em;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.proj.vis .pt p:last-child{margin-bottom:0}
+.proj.vis .shot{margin-inline:0;max-width:none;width:100%}
+.proj.vis .shot::after{max-width:40%;overflow:hidden;text-overflow:ellipsis}
+
+/* picture: gentle scroll-linked drift + live light that follows the pointer */
+.proj.vis .shot img{translate:0 calc((.5 - var(--vp,.5)) * 26px)!important;scale:1!important;will-change:translate}
+@media(max-width:860px){.proj.vis .shot img{translate:0 calc((.5 - var(--vp,.5)) * 12px)!important}}
+.proj.vis .shot{--glow:radial-gradient(420px circle at var(--mxp,50%) var(--myp,50%),rgba(49,94,251,.16),transparent 60%)}
+.proj.vis .shot>img{position:relative;z-index:1}
+.proj.vis .shot .gl{display:none}
+@media(hover:hover) and (pointer:fine){
+  .proj.vis .shot::before{z-index:3}
+  .proj.vis:hover .shot{background:var(--glow),linear-gradient(180deg,#eef2fb,#dfe6f6)}
+}
+
+/* ---- call steps: answered -> reassured -> booked -> confirmed, lighting up in a loop ---- */
+.proj.vis .vflow{order:3;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;counter-reset:none}
+.vflow li{position:relative;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;min-width:0;
+  background:rgba(255,255,255,.7);border:1px solid rgba(23,37,84,.1);color:#51608a;
+  transition:background-color .6s var(--mx-silk),color .6s var(--mx-silk),border-color .6s,transform .8s var(--mx-silk),box-shadow .8s var(--mx-silk)}
+.vflow b{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;font:600 11px/1 "JetBrains Mono",monospace;background:rgba(49,94,251,.1);color:#315EFB;transition:background-color .6s,color .6s}
+.vflow span{font:600 13.5px/1.2 Sora,Manrope,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vflow li::after{content:"";position:absolute;left:14px;right:14px;bottom:0;height:2px;border-radius:2px;background:#315EFB;transform:scaleX(0);transform-origin:left}
+.vflow-on .vflow li{animation:vfStep 6.4s var(--mx-silk) infinite}
+.vflow-on .vflow li::after{animation:vfBar 6.4s linear infinite}
+.vflow-on .vflow li:nth-child(1),.vflow-on .vflow li:nth-child(1)::after{animation-delay:0s}
+.vflow-on .vflow li:nth-child(2),.vflow-on .vflow li:nth-child(2)::after{animation-delay:1.6s}
+.vflow-on .vflow li:nth-child(3),.vflow-on .vflow li:nth-child(3)::after{animation-delay:3.2s}
+.vflow-on .vflow li:nth-child(4),.vflow-on .vflow li:nth-child(4)::after{animation-delay:4.8s}
+@keyframes vfStep{0%,25%{background:#eaf0ff;color:#172554;border-color:rgba(49,94,251,.45);transform:translate3d(0,-3px,0);box-shadow:0 14px 26px -16px rgba(49,94,251,.6)}30%,100%{background:rgba(255,255,255,.7);color:#51608a;border-color:rgba(23,37,84,.1);transform:none;box-shadow:none}}
+@keyframes vfBar{0%{transform:scaleX(0)}25%,100%{transform:scaleX(1)}}
+@media(max-width:860px){
+  .proj.vis .vflow{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .vflow li{padding:10px 12px}
+  .vflow span{font-size:13px}
+}
+@media(max-width:360px){.vflow span{font-size:12px}.vflow b{width:24px;height:24px}}
+
+/* button: full width + thumb-sized on phones, soft lift on pointer devices */
+.proj.vis .btn{transition:transform .5s var(--mx-silk),box-shadow .5s var(--mx-silk)}
+@media(max-width:560px){.proj.vis .pt p a.btn{display:flex;justify-content:center;width:100%;min-height:48px;box-sizing:border-box}}
+@media(hover:hover){.proj.vis .btn:hover{transform:translate3d(0,-2px,0)}}
+
+/* ---- staggered entrance: heading, text, chips, button, picture, steps arrive one after another ---- */
+html.js .mc.vis .pt>*,html.js .mc.vis .chips li,html.js .mc.vis .vflow{transition:opacity 1.1s var(--mx-silk),transform 1.4s var(--mx-silk)}
+html.js .mc.vis.mc-hide .pt>*,html.js .mc.vis.mc-hide .vflow{opacity:0;transform:translate3d(0,22px,0);transition:none}
+html.js .mc.vis.mc-hide .chips li{opacity:0;transform:translate3d(0,14px,0) scale(.92);transition:none}
+html.js .mc.vis.mc-anim .pt>h3{transition-delay:.12s}
+html.js .mc.vis.mc-anim .pt>p:nth-of-type(1){transition-delay:.24s}
+html.js .mc.vis.mc-anim .pt>.chips{transition-delay:.3s}
+html.js .mc.vis.mc-anim .chips li:nth-child(1){transition-delay:.38s}
+html.js .mc.vis.mc-anim .chips li:nth-child(2){transition-delay:.46s}
+html.js .mc.vis.mc-anim .chips li:nth-child(3){transition-delay:.54s}
+html.js .mc.vis.mc-anim .chips li:nth-child(4){transition-delay:.62s}
+html.js .mc.vis.mc-anim .pt>p:last-child{transition-delay:.7s}
+html.js .mc.vis.mc-anim .vflow{transition-delay:.9s}
+/* the card itself arrives quietly; the content does the talking */
+html.js .mc.vis.mc-hide{transform:translate3d(0,36px,0) scale(.985)!important}
+
+/* ---- phones: same effects, lighter distances; nothing may overflow ---- */
+@media(max-width:860px){
+  html.js .mc.vis.mc-hide .pt>*,html.js .mc.vis.mc-hide .vflow{transform:translate3d(0,14px,0)}
+  .proj.vis,.proj.vis *{max-width:100%}
+  .proj.vis .shot img{max-width:100%}
+}
